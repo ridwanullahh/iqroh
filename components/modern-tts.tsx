@@ -17,7 +17,7 @@ import {
   Download
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { toast } from "sonner"
+import { useToast } from "@/components/ui/use-toast"
 
 interface ModernTTSProps {
   text: string
@@ -42,6 +42,7 @@ export default function ModernTTS({
   onPlayEnd,
   variant = "default"
 }: ModernTTSProps) {
+  const { toast } = useToast()
   const [isPlaying, setIsPlaying] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [volume, setVolume] = useState([0.8])
@@ -123,7 +124,11 @@ export default function ModernTTS({
       setIsPaused(false)
       setIsLoading(false)
       setProgress(0)
-      toast.error("Speech synthesis error occurred")
+      toast({
+        title: "Speech Error",
+        description: "Speech synthesis error occurred",
+        variant: "destructive"
+      })
       console.error("Speech synthesis error:", event)
     }
 
@@ -132,7 +137,11 @@ export default function ModernTTS({
 
   const handlePlay = () => {
     if (!isSupported) {
-      toast.error("Speech synthesis is not supported in this browser")
+      toast({
+        title: "Not Supported",
+        description: "Speech synthesis is not supported in this browser",
+        variant: "destructive"
+      })
       return
     }
 
@@ -185,7 +194,10 @@ export default function ModernTTS({
   }
 
   const downloadAudio = async () => {
-    toast.info("Audio download feature coming soon!")
+    toast({
+      title: "Coming Soon",
+      description: "Audio download feature coming soon!"
+    })
   }
 
   if (!isSupported) {

@@ -5,6 +5,7 @@ import HarakatDisplay from "@/components/harakat-display"
 import PronunciationPractice from "@/components/pronunciation-practice"
 import WritingPractice from "@/components/writing-practice"
 import Assessment from "@/components/assessment"
+import ModernTTS from "@/components/modern-tts"
 
 interface LessonPageProps {
   params: {
@@ -419,7 +420,259 @@ export default function LessonPage({ params }: LessonPageProps) {
       case 4:
         return (
           <LessonLayout moduleId={moduleId} lessonId={lessonId}>
-            <SentenceReadingPracticeLesson />
+            <FluentReadingLesson />
+          </LessonLayout>
+        )
+      default:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <div className="prose dark:prose-invert max-w-none">
+              <h2>Lesson Content Coming Soon</h2>
+              <p>This lesson is under development. Please check back later or continue with the available lessons.</p>
+            </div>
+          </LessonLayout>
+        )
+    }
+  } else if (moduleId === 10) {
+    // Tajweed Fundamentals module
+    switch (lessonId) {
+      case 1:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <IntroToTajweedLesson />
+          </LessonLayout>
+        )
+      case 2:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <TajweedImportanceLesson />
+          </LessonLayout>
+        )
+      case 3:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <BasicTajweedRulesLesson />
+          </LessonLayout>
+        )
+      case 4:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <TajweedPracticeLesson />
+          </LessonLayout>
+        )
+      default:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <div className="prose dark:prose-invert max-w-none">
+              <h2>Lesson Content Coming Soon</h2>
+              <p>This lesson is under development. Please check back later or continue with the available lessons.</p>
+            </div>
+          </LessonLayout>
+        )
+    }
+  } else if (moduleId === 11) {
+    // Nun Sakin and Tanween Rules module
+    switch (lessonId) {
+      case 1:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <IntroToNunSakinLesson />
+          </LessonLayout>
+        )
+      case 2:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <IzharRuleLesson />
+          </LessonLayout>
+        )
+      case 3:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <IdghamRuleLesson />
+          </LessonLayout>
+        )
+      case 4:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <IqlabRuleLesson />
+          </LessonLayout>
+        )
+      case 5:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <IkhfaRuleLesson />
+          </LessonLayout>
+        )
+      default:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <div className="prose dark:prose-invert max-w-none">
+              <h2>Lesson Content Coming Soon</h2>
+              <p>This lesson is under development. Please check back later or continue with the available lessons.</p>
+            </div>
+          </LessonLayout>
+        )
+    }
+  } else if (moduleId === 12) {
+    // Meem Sakin Rules module
+    switch (lessonId) {
+      case 1:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <IntroToMeemSakinLesson />
+          </LessonLayout>
+        )
+      case 2:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <IdghamShafawiLesson />
+          </LessonLayout>
+        )
+      case 3:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <IkhfaShafawiLesson />
+          </LessonLayout>
+        )
+      case 4:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <IzharShafawiLesson />
+          </LessonLayout>
+        )
+      default:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <div className="prose dark:prose-invert max-w-none">
+              <h2>Lesson Content Coming Soon</h2>
+              <p>This lesson is under development. Please check back later or continue with the available lessons.</p>
+            </div>
+          </LessonLayout>
+        )
+    }
+  } else if (moduleId === 13) {
+    // Qalqalah module
+    switch (lessonId) {
+      case 1:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <IntroToQalqalahLesson />
+          </LessonLayout>
+        )
+      case 2:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <QalqalahLettersLesson />
+          </LessonLayout>
+        )
+      case 3:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <MinorQalqalahLesson />
+          </LessonLayout>
+        )
+      case 4:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <MajorQalqalahLesson />
+          </LessonLayout>
+        )
+      default:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <div className="prose dark:prose-invert max-w-none">
+              <h2>Lesson Content Coming Soon</h2>
+              <p>This lesson is under development. Please check back later or continue with the available lessons.</p>
+            </div>
+          </LessonLayout>
+        )
+    }
+  } else if (moduleId === 14) {
+    // Rules of Raa module
+    switch (lessonId) {
+      case 1:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <IntroToRaaRulesLesson />
+          </LessonLayout>
+        )
+      case 2:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <TafkheemRaaLesson />
+          </LessonLayout>
+        )
+      case 3:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <TarqeeqRaaLesson />
+          </LessonLayout>
+        )
+      case 4:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <RaaPracticeLesson />
+          </LessonLayout>
+        )
+      default:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <div className="prose dark:prose-invert max-w-none">
+              <h2>Lesson Content Coming Soon</h2>
+              <p>This lesson is under development. Please check back later or continue with the available lessons.</p>
+            </div>
+          </LessonLayout>
+        )
+    }
+  } else if (moduleId === 15) {
+    // Special Rules and Integration module
+    switch (lessonId) {
+      case 1:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <AdvancedTajweedLesson />
+          </LessonLayout>
+        )
+      case 2:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <WaqfAndIbtidaLesson />
+          </LessonLayout>
+        )
+      case 3:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <MaddRulesLesson />
+          </LessonLayout>
+        )
+      case 4:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <TajweedIntegrationLesson />
+          </LessonLayout>
+        )
+      case 5:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <BeautifulRecitationLesson />
+          </LessonLayout>
+        )
+      case 6:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <RecitationStylesLesson />
+          </LessonLayout>
+        )
+      case 7:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <PracticalApplicationLesson />
+          </LessonLayout>
+        )
+      case 8:
+        return (
+          <LessonLayout moduleId={moduleId} lessonId={lessonId}>
+            <MasteryAssessmentLesson />
           </LessonLayout>
         )
       default:
@@ -433,12 +686,12 @@ export default function LessonPage({ params }: LessonPageProps) {
         )
     }
   } else {
-    // For modules 10-15, show a placeholder for now
+    // For any other modules, show a placeholder
     return (
       <LessonLayout moduleId={moduleId} lessonId={lessonId}>
         <div className="prose dark:prose-invert max-w-none">
-          <h2>Advanced Lesson Content Coming Soon</h2>
-          <p>This advanced lesson is under development. Please check back later or continue with the available lessons.</p>
+          <h2>Module Not Found</h2>
+          <p>This module does not exist. Please check the module number and try again.</p>
         </div>
       </LessonLayout>
     )
@@ -3285,6 +3538,1310 @@ function NecessaryElongationLesson() {
         onComplete={(score, total) => {
           console.log(`Score: ${score}/${total}`)
         }}
+      />
+    </div>
+  )
+}
+
+// Module 6: Sukuun and Non-Vowels Lesson Components
+function IntroToSukuunLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Introduction to Sukuun</h2>
+
+        <p>
+          Welcome to the Sukuun module! Sukuun (سُكُون) is a diacritical mark that indicates the absence of a vowel sound after a consonant.
+          Understanding Sukuun is crucial for proper Arabic pronunciation and reading.
+        </p>
+
+        <h3>What is Sukuun?</h3>
+
+        <p>
+          Sukuun (ْ) is a small circle placed above a letter to indicate that the letter has no vowel sound following it.
+          When a letter has Sukuun, you pronounce only the consonant sound without any vowel.
+        </p>
+
+        <h3>How Sukuun Looks</h3>
+
+        <p>The Sukuun mark appears as a small circle (ْ) above the letter.</p>
+      </div>
+
+      <div className="bg-muted p-6 rounded-lg">
+        <h3 className="font-bold mb-4">Examples of Sukuun</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+          <div>
+            <div className="text-6xl mb-2">مِنْ</div>
+            <div className="text-lg font-medium">min</div>
+            <div className="text-sm text-muted-foreground">from</div>
+          </div>
+          <div>
+            <div className="text-6xl mb-2">عَنْ</div>
+            <div className="text-lg font-medium">an</div>
+            <div className="text-sm text-muted-foreground">about</div>
+          </div>
+          <div>
+            <div className="text-6xl mb-2">فِي</div>
+            <div className="text-lg font-medium">fee</div>
+            <div className="text-sm text-muted-foreground">in</div>
+          </div>
+        </div>
+      </div>
+
+      <PronunciationPractice
+        text="Practice Sukuun pronunciation"
+        audioSrc="/audio/sukuun-intro.mp3"
+        arabicText="مِنْ عَنْ إِلَى"
+      />
+    </div>
+  )
+}
+
+function SukuunOnLettersLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Sukuun on Different Letters</h2>
+
+        <p>
+          In this lesson, we'll learn how Sukuun affects different Arabic letters and how to pronounce them correctly.
+        </p>
+
+        <h3>Sukuun Rules</h3>
+
+        <ol>
+          <li>When a letter has Sukuun, pronounce only the consonant sound</li>
+          <li>No vowel sound follows the letter</li>
+          <li>The letter sound is "cut off" or stopped</li>
+          <li>Common in the middle and end of words</li>
+        </ol>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Common Letters with Sukuun</h3>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-3xl">بْ</span>
+              <span>b (no vowel)</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-3xl">تْ</span>
+              <span>t (no vowel)</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-3xl">نْ</span>
+              <span>n (no vowel)</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-3xl">مْ</span>
+              <span>m (no vowel)</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Words with Sukuun</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-4xl mb-2">كَتَبْتُ</div>
+              <div className="text-sm">katabtu (I wrote)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">مَدْرَسَة</div>
+              <div className="text-sm">madrasah (school)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <PronunciationPractice
+        text="Practice letters with Sukuun"
+        audioSrc="/audio/sukuun-letters.mp3"
+        arabicText="كَتَبْتُ مَدْرَسَة"
+      />
+    </div>
+  )
+}
+
+function ConsonantClustersLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Consonant Clusters</h2>
+
+        <p>
+          Consonant clusters occur when two or more consonants (letters with Sukuun) come together without vowels between them.
+          This is common in Arabic and requires special attention for proper pronunciation.
+        </p>
+
+        <h3>Types of Consonant Clusters</h3>
+
+        <ol>
+          <li><strong>Two consonants together</strong> - Most common type</li>
+          <li><strong>Three consonants together</strong> - Less common but important</li>
+          <li><strong>At word boundaries</strong> - Between words</li>
+        </ol>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Two-Consonant Clusters</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-4xl mb-2">كَتْبٌ</div>
+              <div className="text-sm">katbun (writing)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">حَمْدٌ</div>
+              <div className="text-sm">hamdun (praise)</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Three-Consonant Clusters</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-4xl mb-2">كَتَبْتُمْ</div>
+              <div className="text-sm">katabtum (you wrote)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <PronunciationPractice
+        text="Practice consonant clusters"
+        audioSrc="/audio/consonant-clusters.mp3"
+        arabicText="كَتْبٌ حَمْدٌ"
+      />
+    </div>
+  )
+}
+
+function SpecialSukuunCasesLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Special Sukuun Cases</h2>
+
+        <p>
+          There are special cases where Sukuun behaves differently or requires special attention.
+          Understanding these cases will improve your Arabic reading significantly.
+        </p>
+
+        <h3>Special Cases</h3>
+
+        <ol>
+          <li><strong>Sukuun at the end of words</strong></li>
+          <li><strong>Sukuun with doubled letters (Shaddah)</strong></li>
+          <li><strong>Sukuun in connected speech</strong></li>
+          <li><strong>Silent letters</strong></li>
+        </ol>
+      </div>
+
+      <div className="bg-muted p-6 rounded-lg">
+        <h3 className="font-bold mb-4">Examples of Special Cases</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="text-center">
+            <div className="text-4xl mb-2">الْكِتَابْ</div>
+            <div className="text-sm">al-kitaab (the book)</div>
+            <div className="text-xs text-muted-foreground">Final Sukuun</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl mb-2">مُحَمَّدْ</div>
+            <div className="text-sm">Muhammad</div>
+            <div className="text-xs text-muted-foreground">Name ending</div>
+          </div>
+        </div>
+      </div>
+
+      <Assessment
+        title="Sukuun and Non-Vowels Assessment"
+        questions={[
+          {
+            id: "q1",
+            type: "multiple-choice",
+            prompt: "What does Sukuun indicate?",
+            options: ["A vowel sound", "No vowel sound", "A long vowel", "A short vowel"],
+            correctAnswer: "1",
+          },
+          {
+            id: "q2",
+            type: "multiple-choice",
+            prompt: "How is Sukuun written?",
+            options: ["A small circle above the letter", "A line above the letter", "A dot below the letter", "Two lines above the letter"],
+            correctAnswer: "0",
+          },
+        ]}
+        onComplete={(score, total) => {
+          console.log(`Score: ${score}/${total}`)
+        }}
+      />
+
+      <PronunciationPractice
+        text="Practice special Sukuun cases"
+        audioSrc="/audio/special-sukuun.mp3"
+        arabicText="الْكِتَابْ مُحَمَّدْ"
+      />
+    </div>
+  )
+}
+
+// Module 7: Sun and Moon Letters Lesson Components
+function DefiniteArticleLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>The Definite Article (ال)</h2>
+
+        <p>
+          The definite article in Arabic is "ال" (al), which is equivalent to "the" in English.
+          However, its pronunciation changes depending on the letter that follows it.
+        </p>
+
+        <h3>Basic Rules</h3>
+
+        <ol>
+          <li>The definite article is always written as "ال"</li>
+          <li>It's attached to the beginning of nouns</li>
+          <li>Its pronunciation depends on the first letter of the word</li>
+          <li>There are two types of letters: Sun Letters and Moon Letters</li>
+        </ol>
+      </div>
+
+      <div className="bg-muted p-6 rounded-lg">
+        <h3 className="font-bold mb-4">Examples of the Definite Article</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="text-center">
+            <div className="text-4xl mb-2">الْكِتَاب</div>
+            <div className="text-sm">al-kitaab (the book)</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl mb-2">الْبَيْت</div>
+            <div className="text-sm">al-bayt (the house)</div>
+          </div>
+        </div>
+      </div>
+
+      <PronunciationPractice
+        text="Practice the definite article"
+        audioSrc="/audio/definite-article.mp3"
+        arabicText="الْكِتَاب الْبَيْت"
+      />
+    </div>
+  )
+}
+
+function SunLettersLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Sun Letters (الحروف الشمسية)</h2>
+
+        <p>
+          Sun Letters are 14 letters that cause the "ل" (Laam) in the definite article "ال" to be assimilated (merged)
+          into the following letter. When this happens, the following letter receives a Shaddah (ّ).
+        </p>
+
+        <h3>The 14 Sun Letters</h3>
+
+        <p>The Sun Letters are: ت ث د ذ ر ز س ش ص ض ط ظ ل ن</p>
+
+        <h3>How Sun Letters Work</h3>
+
+        <ol>
+          <li>The Laam (ل) is not pronounced</li>
+          <li>The Sun Letter gets a Shaddah (ّ)</li>
+          <li>The Sun Letter is pronounced with emphasis</li>
+          <li>The "ا" (Alif) is still pronounced as "a"</li>
+        </ol>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Sun Letters Examples</h3>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-3xl">الشَّمْس</span>
+              <span>ash-shams (the sun)</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-3xl">الطَّعَام</span>
+              <span>at-ta'aam (the food)</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-3xl">الرَّجُل</span>
+              <span>ar-rajul (the man)</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Memory Aid</h3>
+          <p className="text-sm mb-3">
+            Remember Sun Letters with this phrase:
+          </p>
+          <div className="text-center">
+            <div className="text-2xl mb-2">طِبْ ثُمَّ صِلْ رَحِماً تَفُزْ ضِفْ ذَا نِعَمْ دَعْ سُوءَ ظَنٍّ زُرْ شَرِيفاً لِلْكَرَمْ</div>
+          </div>
+        </div>
+      </div>
+
+      <PronunciationPractice
+        text="Practice Sun Letters"
+        audioSrc="/audio/sun-letters.mp3"
+        arabicText="الشَّمْس الطَّعَام الرَّجُل"
+      />
+    </div>
+  )
+}
+
+function MoonLettersLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Moon Letters (الحروف القمرية)</h2>
+
+        <p>
+          Moon Letters are the remaining 14 letters of the Arabic alphabet. When the definite article "ال"
+          comes before a Moon Letter, the Laam (ل) is pronounced clearly.
+        </p>
+
+        <h3>The 14 Moon Letters</h3>
+
+        <p>The Moon Letters are: ا ب ج ح خ ع غ ف ق ك م ه و ي</p>
+
+        <h3>How Moon Letters Work</h3>
+
+        <ol>
+          <li>The Laam (ل) is pronounced clearly</li>
+          <li>No Shaddah is added to the Moon Letter</li>
+          <li>The pronunciation is "al-" + the word</li>
+          <li>This is the "normal" pronunciation of the definite article</li>
+        </ol>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Moon Letters Examples</h3>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-3xl">الْقَمَر</span>
+              <span>al-qamar (the moon)</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-3xl">الْبَيْت</span>
+              <span>al-bayt (the house)</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-3xl">الْكِتَاب</span>
+              <span>al-kitaab (the book)</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Key Difference</h3>
+          <div className="space-y-3">
+            <div>
+              <div className="font-semibold">Sun Letters:</div>
+              <div className="text-2xl">الشَّمْس (ash-shams)</div>
+              <div className="text-sm text-muted-foreground">Laam not pronounced</div>
+            </div>
+            <div>
+              <div className="font-semibold">Moon Letters:</div>
+              <div className="text-2xl">الْقَمَر (al-qamar)</div>
+              <div className="text-sm text-muted-foreground">Laam pronounced clearly</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <PronunciationPractice
+        text="Practice Moon Letters"
+        audioSrc="/audio/moon-letters.mp3"
+        arabicText="الْقَمَر الْبَيْت الْكِتَاب"
+      />
+    </div>
+  )
+}
+
+function SunMoonPracticeLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Sun and Moon Letters Practice</h2>
+
+        <p>
+          Now let's practice distinguishing between Sun and Moon Letters and applying the correct pronunciation rules.
+        </p>
+
+        <h3>Quick Review</h3>
+
+        <ul>
+          <li><strong>Sun Letters:</strong> Laam is assimilated, following letter gets Shaddah</li>
+          <li><strong>Moon Letters:</strong> Laam is pronounced clearly</li>
+        </ul>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Sun Letters Practice</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-3xl mb-1">النَّار</div>
+              <div className="text-sm">an-naar (the fire)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl mb-1">الدَّار</div>
+              <div className="text-sm">ad-daar (the house)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl mb-1">الصَّبْر</div>
+              <div className="text-sm">as-sabr (patience)</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Moon Letters Practice</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-3xl mb-1">الْعِلْم</div>
+              <div className="text-sm">al-'ilm (knowledge)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl mb-1">الْحَمْد</div>
+              <div className="text-sm">al-hamd (praise)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl mb-1">الْوَقْت</div>
+              <div className="text-sm">al-waqt (time)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Assessment
+        title="Sun and Moon Letters Assessment"
+        questions={[
+          {
+            id: "q1",
+            type: "multiple-choice",
+            prompt: "What happens with Sun Letters?",
+            options: ["Laam is pronounced clearly", "Laam is assimilated", "Alif is dropped", "Nothing special"],
+            correctAnswer: "1",
+          },
+          {
+            id: "q2",
+            type: "multiple-choice",
+            prompt: "How many Sun Letters are there?",
+            options: ["12", "13", "14", "15"],
+            correctAnswer: "2",
+          },
+          {
+            id: "q3",
+            type: "multiple-choice",
+            prompt: "Which is a Moon Letter?",
+            options: ["ت", "ش", "ق", "ر"],
+            correctAnswer: "2",
+          },
+        ]}
+        onComplete={(score, total) => {
+          console.log(`Score: ${score}/${total}`)
+        }}
+      />
+
+      <PronunciationPractice
+        text="Practice mixed Sun and Moon Letters"
+        audioSrc="/audio/sun-moon-practice.mp3"
+        arabicText="النَّار الْعِلْم الدَّار الْحَمْد"
+      />
+    </div>
+  )
+}
+
+// Module 8: Word Formation Lesson Components
+function SimpleWordsLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Reading Simple Words</h2>
+
+        <p>
+          Now that you've learned individual letters, vowels, and basic rules, it's time to start reading complete words.
+          We'll begin with simple, common Arabic words.
+        </p>
+
+        <h3>What Makes a Word "Simple"?</h3>
+
+        <ul>
+          <li>Short length (2-4 letters)</li>
+          <li>Clear vowel markings</li>
+          <li>No complex rules applied</li>
+          <li>Common vocabulary</li>
+        </ul>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Two-Letter Words</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-4xl mb-2">مَا</div>
+              <div className="text-sm">maa (what)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">لَا</div>
+              <div className="text-sm">laa (no)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">فِي</div>
+              <div className="text-sm">fee (in)</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Three-Letter Words</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-4xl mb-2">كِتَاب</div>
+              <div className="text-sm">kitaab (book)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">بَيْت</div>
+              <div className="text-sm">bayt (house)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">وَلَد</div>
+              <div className="text-sm">walad (boy)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <PronunciationPractice
+        text="Practice simple words"
+        audioSrc="/audio/simple-words.mp3"
+        arabicText="مَا لَا فِي كِتَاب بَيْت"
+      />
+    </div>
+  )
+}
+
+function ComplexWordsLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Reading Complex Words</h2>
+
+        <p>
+          Complex words involve multiple rules working together. These might include elongations,
+          definite articles, or special letter combinations.
+        </p>
+
+        <h3>What Makes a Word "Complex"?</h3>
+
+        <ul>
+          <li>Longer length (5+ letters)</li>
+          <li>Multiple rules applied</li>
+          <li>Elongations (Mudood)</li>
+          <li>Sun/Moon letter rules</li>
+          <li>Consonant clusters</li>
+        </ul>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Words with Elongations</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-4xl mb-2">الْقُرْآن</div>
+              <div className="text-sm">al-qur'aan (the Qur'an)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">الصَّلَاة</div>
+              <div className="text-sm">as-salaah (the prayer)</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Words with Multiple Rules</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-4xl mb-2">الْمُسْلِمُون</div>
+              <div className="text-sm">al-muslimoon (the Muslims)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">الْمَدْرَسَة</div>
+              <div className="text-sm">al-madrasah (the school)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <PronunciationPractice
+        text="Practice complex words"
+        audioSrc="/audio/complex-words.mp3"
+        arabicText="الْقُرْآن الصَّلَاة الْمُسْلِمُون"
+      />
+    </div>
+  )
+}
+
+function WordRecognitionLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Word Recognition Skills</h2>
+
+        <p>
+          Developing word recognition skills helps you read more fluently. This involves recognizing
+          common word patterns and building your Arabic vocabulary.
+        </p>
+
+        <h3>Recognition Strategies</h3>
+
+        <ol>
+          <li><strong>Root patterns:</strong> Most Arabic words are built on 3-letter roots</li>
+          <li><strong>Common prefixes:</strong> ال، و، ب، ل، ف</li>
+          <li><strong>Common suffixes:</strong> ة، ان، ين، ون</li>
+          <li><strong>Word families:</strong> Words sharing the same root</li>
+        </ol>
+      </div>
+
+      <div className="bg-muted p-6 rounded-lg">
+        <h3 className="font-bold mb-4">Word Family Example: ك-ت-ب (writing)</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="text-center">
+            <div className="text-3xl mb-2">كَتَبَ</div>
+            <div className="text-sm">kataba (he wrote)</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl mb-2">كِتَاب</div>
+            <div className="text-sm">kitaab (book)</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl mb-2">مَكْتَبَة</div>
+            <div className="text-sm">maktabah (library)</div>
+          </div>
+        </div>
+      </div>
+
+      <PronunciationPractice
+        text="Practice word recognition"
+        audioSrc="/audio/word-recognition.mp3"
+        arabicText="كَتَبَ كِتَاب مَكْتَبَة"
+      />
+    </div>
+  )
+}
+
+function ReadingPracticeLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Reading Practice</h2>
+
+        <p>
+          Let's practice reading various words to build your confidence and fluency.
+          Focus on applying all the rules you've learned so far.
+        </p>
+
+        <h3>Reading Tips</h3>
+
+        <ul>
+          <li>Start slowly and focus on accuracy</li>
+          <li>Apply vowel rules correctly</li>
+          <li>Pay attention to elongations</li>
+          <li>Practice regularly for improvement</li>
+        </ul>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Practice Set 1</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-3xl mb-1">الْحَمْدُ لِلّهِ</div>
+              <div className="text-sm">al-hamdu lillaahi</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl mb-1">رَبِّ الْعَالَمِين</div>
+              <div className="text-sm">rabbi al-'aalameen</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Practice Set 2</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-3xl mb-1">الرَّحْمٰنِ الرَّحِيم</div>
+              <div className="text-sm">ar-rahmaani ar-raheem</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl mb-1">مَالِكِ يَوْمِ الدِّين</div>
+              <div className="text-sm">maaliki yawmi ad-deen</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Assessment
+        title="Word Formation Assessment"
+        questions={[
+          {
+            id: "q1",
+            type: "multiple-choice",
+            prompt: "What makes a word 'simple' in Arabic reading?",
+            options: ["Few letters", "No elongations or special rules", "Short vowels only", "Common vocabulary"],
+            correctAnswer: "1",
+          },
+          {
+            id: "q2",
+            type: "multiple-choice",
+            prompt: "Most Arabic words are built on how many letter roots?",
+            options: ["2 letters", "3 letters", "4 letters", "5 letters"],
+            correctAnswer: "1",
+          },
+        ]}
+        onComplete={(score, total) => {
+          console.log(`Score: ${score}/${total}`)
+        }}
+      />
+
+      <PronunciationPractice
+        text="Practice reading"
+        audioSrc="/audio/reading-practice.mp3"
+        arabicText="الْحَمْدُ لِلّهِ رَبِّ الْعَالَمِين"
+      />
+    </div>
+  )
+}
+
+// Module 9: Sentence Construction Lesson Components
+function SimpleSentencesLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Reading Simple Sentences</h2>
+
+        <p>
+          Now that you can read individual words, let's move on to reading complete sentences.
+          We'll start with simple, short sentences from the Qur'an and common Arabic phrases.
+        </p>
+
+        <h3>Sentence Reading Tips</h3>
+
+        <ul>
+          <li>Read word by word initially</li>
+          <li>Pay attention to word boundaries</li>
+          <li>Apply all the rules you've learned</li>
+          <li>Focus on smooth transitions between words</li>
+        </ul>
+      </div>
+
+      <div className="bg-muted p-6 rounded-lg">
+        <h3 className="font-bold mb-4">Simple Qur'anic Sentences</h3>
+        <div className="space-y-4">
+          <div className="text-center">
+            <div className="text-3xl mb-2">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيم</div>
+            <div className="text-sm">Bismillaahi ar-rahmaani ar-raheem</div>
+            <div className="text-xs text-muted-foreground">In the name of Allah, the Most Gracious, the Most Merciful</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl mb-2">الْحَمْدُ لِلّهِ رَبِّ الْعَالَمِين</div>
+            <div className="text-sm">Al-hamdu lillaahi rabbi al-'aalameen</div>
+            <div className="text-xs text-muted-foreground">All praise is due to Allah, Lord of the worlds</div>
+          </div>
+        </div>
+      </div>
+
+      <PronunciationPractice
+        text="Practice simple sentences"
+        audioSrc="/audio/simple-sentences.mp3"
+        arabicText="بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيم"
+      />
+    </div>
+  )
+}
+
+function BreathControlLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Breath Control in Reading</h2>
+
+        <p>
+          Proper breath control is essential for smooth, flowing recitation. Learning when and where
+          to take breaths will improve your reading significantly.
+        </p>
+
+        <h3>Breath Control Rules</h3>
+
+        <ol>
+          <li><strong>Natural pauses:</strong> Take breaths at the end of verses or logical breaks</li>
+          <li><strong>Don't break words:</strong> Never take a breath in the middle of a word</li>
+          <li><strong>Don't break meaning:</strong> Avoid breaking closely related words</li>
+          <li><strong>Practice regularly:</strong> Build your lung capacity gradually</li>
+        </ol>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Good Breathing Points</h3>
+          <div className="space-y-3">
+            <div>
+              <div className="text-2xl mb-1">الْحَمْدُ لِلّهِ رَبِّ الْعَالَمِين</div>
+              <div className="text-sm">✓ End of verse - good place to breathe</div>
+            </div>
+            <div>
+              <div className="text-2xl mb-1">الرَّحْمٰنِ الرَّحِيم</div>
+              <div className="text-sm">✓ End of verse - good place to breathe</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Avoid Breaking Here</h3>
+          <div className="space-y-3">
+            <div>
+              <div className="text-2xl mb-1">بِسْمِ | اللهِ</div>
+              <div className="text-sm">✗ Don't break between closely related words</div>
+            </div>
+            <div>
+              <div className="text-2xl mb-1">الرَّحْ | مٰنِ</div>
+              <div className="text-sm">✗ Never break in the middle of a word</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <PronunciationPractice
+        text="Practice breath control"
+        audioSrc="/audio/breath-control.mp3"
+        arabicText="الْحَمْدُ لِلّهِ رَبِّ الْعَالَمِين الرَّحْمٰنِ الرَّحِيم"
+      />
+    </div>
+  )
+}
+
+function SentenceFlowLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Sentence Flow and Rhythm</h2>
+
+        <p>
+          Developing good sentence flow involves connecting words smoothly and maintaining a
+          natural rhythm in your recitation.
+        </p>
+
+        <h3>Flow Techniques</h3>
+
+        <ul>
+          <li><strong>Smooth transitions:</strong> Connect words naturally</li>
+          <li><strong>Consistent pace:</strong> Don't rush or drag</li>
+          <li><strong>Natural rhythm:</strong> Follow the Arabic language's natural flow</li>
+          <li><strong>Emotional connection:</strong> Understand the meaning to improve flow</li>
+        </ul>
+      </div>
+
+      <div className="bg-muted p-6 rounded-lg">
+        <h3 className="font-bold mb-4">Practice Sentences for Flow</h3>
+        <div className="space-y-4">
+          <div className="text-center">
+            <div className="text-2xl mb-2">إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِين</div>
+            <div className="text-sm">Iyyaaka na'budu wa iyyaaka nasta'een</div>
+            <div className="text-xs text-muted-foreground">You alone we worship, and You alone we ask for help</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl mb-2">اهْدِنَا الصِّرَاطَ الْمُسْتَقِيم</div>
+            <div className="text-sm">Ihdinaa as-siraata al-mustaqeem</div>
+            <div className="text-xs text-muted-foreground">Guide us to the straight path</div>
+          </div>
+        </div>
+      </div>
+
+      <PronunciationPractice
+        text="Practice sentence flow"
+        audioSrc="/audio/sentence-flow.mp3"
+        arabicText="إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِين"
+      />
+    </div>
+  )
+}
+
+function FluentReadingLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Developing Fluent Reading</h2>
+
+        <p>
+          Fluent reading combines all the skills you've learned: accurate pronunciation, proper breath control,
+          smooth flow, and understanding of the text's meaning.
+        </p>
+
+        <h3>Fluency Goals</h3>
+
+        <ul>
+          <li>Read without hesitation</li>
+          <li>Apply all rules automatically</li>
+          <li>Maintain natural rhythm</li>
+          <li>Focus on meaning, not just pronunciation</li>
+        </ul>
+      </div>
+
+      <div className="bg-muted p-6 rounded-lg">
+        <h3 className="font-bold mb-4">Complete Surah Al-Fatihah Practice</h3>
+        <div className="text-center space-y-3">
+          <div className="text-2xl">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيم</div>
+          <div className="text-2xl">الْحَمْدُ لِلّهِ رَبِّ الْعَالَمِين</div>
+          <div className="text-2xl">الرَّحْمٰنِ الرَّحِيم</div>
+          <div className="text-2xl">مَالِكِ يَوْمِ الدِّين</div>
+          <div className="text-2xl">إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِين</div>
+          <div className="text-2xl">اهْدِنَا الصِّرَاطَ الْمُسْتَقِيم</div>
+          <div className="text-2xl">صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّين</div>
+        </div>
+      </div>
+
+      <Assessment
+        title="Sentence Construction Assessment"
+        questions={[
+          {
+            id: "q1",
+            type: "multiple-choice",
+            prompt: "When should you take breaths while reading?",
+            options: ["After every word", "At natural pause points", "Never", "Randomly"],
+            correctAnswer: "1",
+          },
+          {
+            id: "q2",
+            type: "multiple-choice",
+            prompt: "What helps with sentence flow?",
+            options: ["Reading faster", "Understanding meaning", "Ignoring vowels", "Skipping words"],
+            correctAnswer: "1",
+          },
+        ]}
+        onComplete={(score, total) => {
+          console.log(`Score: ${score}/${total}`)
+        }}
+      />
+
+      <PronunciationPractice
+        text="Practice fluent reading"
+        audioSrc="/audio/fluent-reading.mp3"
+        arabicText="بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيم الْحَمْدُ لِلّهِ رَبِّ الْعَالَمِين"
+      />
+    </div>
+  )
+}
+
+// Module 5: Mudood (Elongations) Lesson Components
+function IntroToMudoodLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Introduction to Mudood (Elongations)</h2>
+
+        <p>
+          Mudood (مُدُود) refers to the elongation of certain vowel sounds in Arabic.
+          Understanding and applying Mudood correctly is essential for proper Qur'anic recitation.
+        </p>
+
+        <h3>What is Mudood?</h3>
+
+        <p>
+          Mudood means "elongations" or "extensions." It occurs when certain letters (called Huroof al-Madd)
+          are preceded by their corresponding short vowels.
+        </p>
+
+        <h3>The Three Madd Letters</h3>
+
+        <ul>
+          <li><strong>Alif (ا)</strong> - preceded by Fathah</li>
+          <li><strong>Waw (و)</strong> - preceded by Dammah</li>
+          <li><strong>Ya (ي)</strong> - preceded by Kasrah</li>
+        </ul>
+      </div>
+
+      <div className="bg-muted p-6 rounded-lg">
+        <h3 className="font-bold mb-4">Examples of Madd Letters</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="text-center">
+            <div className="text-4xl mb-2">قَال</div>
+            <div className="text-sm">qaala (he said)</div>
+            <div className="text-xs text-muted-foreground">Alif after Fathah</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl mb-2">يَقُول</div>
+            <div className="text-sm">yaqoolu (he says)</div>
+            <div className="text-xs text-muted-foreground">Waw after Dammah</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl mb-2">قِيل</div>
+            <div className="text-sm">qeela (it was said)</div>
+            <div className="text-xs text-muted-foreground">Ya after Kasrah</div>
+          </div>
+        </div>
+      </div>
+
+      <ModernTTS
+        text="Practice Mudood introduction"
+        arabicText="قَال يَقُول قِيل"
+        variant="compact"
+      />
+    </div>
+  )
+}
+
+function NaturalElongationLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Natural Elongation (Madd Tabee'ee)</h2>
+
+        <p>
+          Madd Tabee'ee (المد الطبيعي) is the natural elongation that occurs when a Madd letter
+          is preceded by its corresponding short vowel. This is the most basic type of elongation.
+        </p>
+
+        <h3>Rules of Madd Tabee'ee</h3>
+
+        <ol>
+          <li>Duration: 2 counts (beats)</li>
+          <li>Occurs naturally without external factors</li>
+          <li>Cannot be shortened or lengthened</li>
+          <li>Most common type of Madd</li>
+        </ol>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Examples of Madd Tabee'ee</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-3xl mb-1">الْقُرْآن</div>
+              <div className="text-sm">al-qur'aan</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl mb-1">الصَّلَاة</div>
+              <div className="text-sm">as-salaah</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl mb-1">الْمُؤْمِنُون</div>
+              <div className="text-sm">al-mu'minoon</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Counting Beats</h3>
+          <div className="space-y-3">
+            <div>
+              <div className="text-2xl mb-1">قَا - ل</div>
+              <div className="text-sm">2 beats on "aa"</div>
+            </div>
+            <div>
+              <div className="text-2xl mb-1">يَقُو - ل</div>
+              <div className="text-sm">2 beats on "oo"</div>
+            </div>
+            <div>
+              <div className="text-2xl mb-1">قِي - ل</div>
+              <div className="text-sm">2 beats on "ee"</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ModernTTS
+        text="Practice natural elongation"
+        arabicText="الْقُرْآن الصَّلَاة الْمُؤْمِنُون"
+        variant="compact"
+      />
+    </div>
+  )
+}
+
+function ConnectedElongationLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Connected Elongation (Madd Muttasil)</h2>
+
+        <p>
+          Madd Muttasil (المد المتصل) occurs when a Madd letter is followed by a Hamzah (ء)
+          in the same word. This type of elongation is longer than natural elongation.
+        </p>
+
+        <h3>Rules of Madd Muttasil</h3>
+
+        <ol>
+          <li>Duration: 4-5 counts (beats)</li>
+          <li>Occurs when Hamzah follows Madd letter in same word</li>
+          <li>Obligatory elongation</li>
+          <li>Cannot be shortened to natural length</li>
+        </ol>
+      </div>
+
+      <div className="bg-muted p-6 rounded-lg">
+        <h3 className="font-bold mb-4">Examples of Madd Muttasil</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="text-center">
+            <div className="text-3xl mb-2">جَاءَ</div>
+            <div className="text-sm">jaa'a (he came)</div>
+            <div className="text-xs text-muted-foreground">4-5 beats</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl mb-2">سُوءَ</div>
+            <div className="text-sm">soo'a (evil)</div>
+            <div className="text-xs text-muted-foreground">4-5 beats</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl mb-2">سِيءَ</div>
+            <div className="text-sm">see'a (bad)</div>
+            <div className="text-xs text-muted-foreground">4-5 beats</div>
+          </div>
+        </div>
+      </div>
+
+      <ModernTTS
+        text="Practice connected elongation"
+        arabicText="جَاءَ سُوءَ سِيءَ"
+        variant="compact"
+      />
+    </div>
+  )
+}
+
+function SeparatedElongationLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Separated Elongation (Madd Munfasil)</h2>
+
+        <p>
+          Madd Munfasil (المد المنفصل) occurs when a Madd letter at the end of one word
+          is followed by a Hamzah at the beginning of the next word.
+        </p>
+
+        <h3>Rules of Madd Munfasil</h3>
+
+        <ol>
+          <li>Duration: 4-5 counts (beats)</li>
+          <li>Occurs between two separate words</li>
+          <li>Permissible elongation (can vary)</li>
+          <li>Depends on recitation style</li>
+        </ol>
+      </div>
+
+      <div className="bg-muted p-6 rounded-lg">
+        <h3 className="font-bold mb-4">Examples of Madd Munfasil</h3>
+        <div className="space-y-4">
+          <div className="text-center">
+            <div className="text-3xl mb-2">يَا أَيُّهَا</div>
+            <div className="text-sm">yaa ayyuhaa (O you)</div>
+            <div className="text-xs text-muted-foreground">4-5 beats on "aa"</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl mb-2">فِي أَنْفُسِكُمْ</div>
+            <div className="text-sm">fee anfusikum (in yourselves)</div>
+            <div className="text-xs text-muted-foreground">4-5 beats on "ee"</div>
+          </div>
+        </div>
+      </div>
+
+      <ModernTTS
+        text="Practice separated elongation"
+        arabicText="يَا أَيُّهَا فِي أَنْفُسِكُمْ"
+        variant="compact"
+      />
+    </div>
+  )
+}
+
+function NecessaryElongationLesson() {
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2>Necessary Elongation (Madd Lazim)</h2>
+
+        <p>
+          Madd Lazim (المد اللازم) is the longest type of elongation, occurring when a Madd letter
+          is followed by a letter with Sukuun or Shaddah. This elongation is obligatory and fixed.
+        </p>
+
+        <h3>Rules of Madd Lazim</h3>
+
+        <ol>
+          <li>Duration: 6 counts (beats)</li>
+          <li>Longest type of elongation</li>
+          <li>Obligatory and fixed length</li>
+          <li>Occurs with Sukuun or Shaddah</li>
+        </ol>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Madd Lazim Examples</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-3xl mb-1">الضَّالِّين</div>
+              <div className="text-sm">ad-daalleen</div>
+              <div className="text-xs text-muted-foreground">6 beats</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl mb-1">الطَّامَّة</div>
+              <div className="text-sm">at-taamah</div>
+              <div className="text-xs text-muted-foreground">6 beats</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-muted p-6 rounded-lg">
+          <h3 className="font-bold mb-4">Letter Names (Huroof Muqatta'ah)</h3>
+          <div className="space-y-3">
+            <div className="text-center">
+              <div className="text-3xl mb-1">الم</div>
+              <div className="text-sm">Alif Laam Meem</div>
+              <div className="text-xs text-muted-foreground">6 beats on each</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Assessment
+        title="Mudood (Elongations) Assessment"
+        questions={[
+          {
+            id: "q1",
+            type: "multiple-choice",
+            prompt: "How long is Madd Tabee'ee?",
+            options: ["1 count", "2 counts", "4 counts", "6 counts"],
+            correctAnswer: "1",
+          },
+          {
+            id: "q2",
+            type: "multiple-choice",
+            prompt: "What is the longest type of Madd?",
+            options: ["Madd Tabee'ee", "Madd Muttasil", "Madd Munfasil", "Madd Lazim"],
+            correctAnswer: "3",
+          },
+        ]}
+        onComplete={(score, total) => {
+          console.log(`Score: ${score}/${total}`)
+        }}
+      />
+
+      <ModernTTS
+        text="Practice necessary elongation"
+        arabicText="الضَّالِّين الطَّامَّة الم"
+        variant="compact"
       />
     </div>
   )
