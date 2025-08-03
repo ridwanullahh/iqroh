@@ -4,6 +4,7 @@ import { Inter, Amiri } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/header"
+import MobileBottomNav from "@/components/mobile-bottom-nav"
 import { Toaster } from "@/components/ui/toaster"
 import SpacedRepetitionInitializer from "@/components/spaced-repetition-initializer"
 
@@ -19,9 +20,22 @@ const amiri = Amiri({
 })
 
 export const metadata: Metadata = {
-  title: "Iqroh - Learn Qur'anic Arabic in 30 Days",
-  description: "Master Qur'anic reading with our comprehensive 30-day curriculum",
-    generator: 'v0.dev'
+  title: "Iqroh - Learn Qur'anic Reading in 30 Days",
+  description: "Master Qur'anic reading with our comprehensive 30-day curriculum. Interactive lessons, audio pronunciation, and modern mobile-first design.",
+  keywords: "Qur'an, Arabic, Tajweed, Islamic education, reading, learning, mobile app",
+  authors: [{ name: "Iqroh Team" }],
+  generator: 'v0.dev',
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#10b981" },
+    { media: "(prefers-color-scheme: dark)", color: "#059669" }
+  ],
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Iqroh"
+  }
 }
 
 export default function RootLayout({
@@ -31,12 +45,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
-      <body className={`${inter.variable} ${amiri.variable} font-sans`}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta name="theme-color" content="#10b981" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Iqroh" />
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+      </head>
+      <body className={`${inter.variable} ${amiri.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <SpacedRepetitionInitializer />
-          <div className="flex min-h-screen flex-col">
+          <div className="flex min-h-screen flex-col bg-background">
             <Header />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 pb-safe">{children}</main>
+            <MobileBottomNav />
           </div>
           <Toaster />
         </ThemeProvider>
