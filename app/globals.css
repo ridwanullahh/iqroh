@@ -267,6 +267,22 @@
     animation: shimmer 1.4s ease-in-out infinite;
   }
 
+  /* Mosaic tile — native-app feel micro-interactions used by the home page grid */
+  .mosaic-tile {
+    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  }
+  .mosaic-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px hsl(var(--foreground) / 0.06);
+  }
+  .mosaic-tile:active {
+    transform: scale(0.98);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mosaic-tile:hover { transform: none; }
+    .mosaic-tile:active { transform: none; }
+  }
+
   /* Soft elevated card */
   .card-elevated {
     box-shadow:
