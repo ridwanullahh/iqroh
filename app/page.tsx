@@ -1,500 +1,426 @@
+"use client"
+
+import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { motion } from "framer-motion"
 import {
   ArrowRight,
   BookOpen,
-  Users,
-  Trophy,
-  Star,
+  Repeat,
+  TrendingUp,
+  User,
+  Flame,
+  Sparkles,
   Play,
-  CheckCircle,
-  Clock,
-  Target,
-  Headphones,
-  Smartphone,
-  Globe,
-  Heart,
-  Zap,
+  Volume2,
+  Calendar,
   Award,
-  TrendingUp
+  Target,
+  ListChecks,
+  Clock,
 } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
-import ModernTTS from "@/components/modern-tts"
+import {
+  getStreak,
+  getNextIncompleteLesson,
+  getRecentActivity,
+  getModuleById,
+  getTotalLessonCount,
+  loadProgress,
+  isLessonCompleted,
+  type ActivityEntry,
+} from "@/lib/progress-service"
+import { speakArabicText } from "@/lib/audio-utils"
+import { useToast } from "@/hooks/use-toast"
+import { curriculumData } from "@/lib/curriculum-data"
 
-export default function Home() {
-  const features = [
-    {
-      icon: BookOpen,
-      title: "15 Complete Modules",
-      description: "From basic letters to advanced Tajweed rules",
-      color: "text-blue-600 dark:text-blue-400",
-      gradient: "from-blue-500 to-cyan-500"
-    },
-    {
-      icon: Headphones,
-      title: "Audio Pronunciation",
-      description: "Native Arabic pronunciation for every lesson",
-      color: "text-green-600 dark:text-green-400",
-      gradient: "from-green-500 to-emerald-500"
-    },
-    {
-      icon: Smartphone,
-      title: "Mobile-First Design",
-      description: "Learn anywhere, anytime on any device",
-      color: "text-purple-600 dark:text-purple-400",
-      gradient: "from-purple-500 to-pink-500"
-    },
-    {
-      icon: Target,
-      title: "Progress Tracking",
-      description: "Monitor your learning journey and achievements",
-      color: "text-orange-600 dark:text-orange-400",
-      gradient: "from-orange-500 to-red-500"
+const FEATURED_LETTERS = [
+  { ar: "ب", en: "Baa", tr: "ba" },
+  { ar: "ت", en: "Taa", tr: "ta" },
+  { ar: "ث", en: "Thaa", tr: "tha" },
+  { ar: "ج", en: "Jeem", tr: "ja" },
+  { ar: "ح", en: "Haa", tr: "ḥa" },
+  { ar: "خ", en: "Khaa", tr: "kha" },
+  { ar: "د", en: "Daal", tr: "da" },
+  { ar: "ذ", en: "Dhaal", tr: "dha" },
+  { ar: "ر", en: "Raa", tr: "ra" },
+  { ar: "ز", en: "Zaay", tr: "za" },
+  { ar: "س", en: "Seen", tr: "sa" },
+  { ar: "ش", en: "Sheen", tr: "sha" },
+  { ar: "ص", en: "Saad", tr: "ṣa" },
+  { ar: "ض", en: "Daad", tr: "ḍa" },
+  { ar: "ط", en: "Taa", tr: "ṭa" },
+  { ar: "ظ", en: "Zaa", tr: "ẓa" },
+  { ar: "ع", en: "Ayn", tr: "ʿa" },
+  { ar: "غ", en: "Ghayn", tr: "gha" },
+  { ar: "ف", en: "Faa", tr: "fa" },
+  { ar: "ق", en: "Qaaf", tr: "qa" },
+  { ar: "ك", en: "Kaaf", tr: "ka" },
+  { ar: "ل", en: "Laam", tr: "la" },
+  { ar: "م", en: "Meem", tr: "ma" },
+  { ar: "ن", en: "Noon", tr: "na" },
+  { ar: "ه", en: "Haa", tr: "ha" },
+  { ar: "و", en: "Waaw", tr: "wa" },
+  { ar: "ي", en: "Yaa", tr: "ya" },
+  { ar: "ا", en: "Alif", tr: "a" },
+  { ar: "ء", en: "Hamza", tr: "'" },
+]
+
+function useHijriDate(): string {
+  const [hijri, setHijri] = useState<string>("")
+
+  useEffect(() => {
+    try {
+      const fmt = new Intl.DateTimeFormat("en-US", {
+        calendar: "islamic-umalqura",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+      setHijri(fmt.format(new Date()))
+    } catch {
+      // Fallback to Gregorian
+      setHijri(new Intl.DateTimeFormat("en-US", { day: "numeric", month: "long", year: "numeric" }).format(new Date()))
     }
-  ]
+  }, [])
 
-  const stats = [
-    { number: "15", label: "Modules", icon: BookOpen, color: "from-blue-500 to-cyan-500" },
-    { number: "75+", label: "Lessons", icon: Play, color: "from-green-500 to-emerald-500" },
-    { number: "30", label: "Days", icon: Clock, color: "from-purple-500 to-pink-500" },
-    { number: "100%", label: "Free", icon: Heart, color: "from-red-500 to-pink-500" }
-  ]
+  return hijri
+}
+
+function useFeaturedLetter() {
+  return useMemo(() => {
+    const dayOfYear = Math.floor(Date.now() / 86_400_000)
+    return FEATURED_LETTERS[dayOfYear % FEATURED_LETTERS.length]
+  }, [])
+}
+
+export default function HomePage() {
+  const hijriDate = useHijriDate()
+  const featured = useFeaturedLetter()
+  const [streak, setStreak] = useState(0)
+  const [continueLesson, setContinueLesson] = useState<{ moduleId: number; lessonId: number } | null>(null)
+  const [activity, setActivity] = useState<ActivityEntry[]>([])
+  const [completedCount, setCompletedCount] = useState(0)
+  const [totalLessons, setTotalLessons] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const { toast } = useToast()
+
+  useEffect(() => {
+    setStreak(getStreak().count)
+    setContinueLesson(getNextIncompleteLesson())
+    setActivity(getRecentActivity(5))
+    setTotalLessons(getTotalLessonCount())
+    setCompletedCount(loadProgress().completedLessons.length)
+  }, [])
+
+  const handlePlayFeatured = async () => {
+    try {
+      setIsPlaying(true)
+      await speakArabicText(featured.ar)
+      setIsPlaying(false)
+    } catch (err) {
+      console.error(err)
+      toast({
+        title: "Audio unavailable",
+        description: "Speech synthesis failed. Please try again.",
+        variant: "destructive",
+      })
+      setIsPlaying(false)
+    }
+  }
+
+  const moduleOf = continueLesson ? getModuleById(continueLesson.moduleId) : null
+  const continueTitle = moduleOf?.lessons?.[continueLesson ? continueLesson.lessonId - 1 : 0]?.title ?? "Lesson"
+
+  const overallPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]" />
-
-        <div className="container-mobile md:container-tablet lg:container-desktop relative">
-          <div className="py-16 md:py-24 lg:py-32 text-center space-y-8">
-            {/* Badge */}
-            <div className="animate-fade-in">
-              <Badge variant="secondary" className="mx-auto bg-gradient-to-r from-primary to-accent text-white border-0 px-6 py-2 rounded-full shadow-medium">
-                <Star className="w-4 h-4 mr-2" />
-                Complete Qur'anic Reading Course
-              </Badge>
+    <div className="mx-auto w-full max-w-5xl px-4 py-6 md:px-6 md:py-8 space-y-6">
+      {/* Greeting */}
+      <motion.section
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="relative overflow-hidden rounded-2xl border border-border/60 bg-card p-6 md:p-8 shadow-soft"
+      >
+        <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-primary/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-accent/10 blur-3xl" />
+        <div className="relative flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Calendar className="h-3.5 w-3.5" />
+              <span>{hijriDate}</span>
+              <span aria-hidden>·</span>
+              <span>Today</span>
             </div>
-
-            {/* Main Heading */}
-            <div className="space-y-4 animate-slide-up">
-              <h1 className="text-display bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent leading-tight">
-                Master Qur'anic Reading
-              </h1>
-              <h2 className="text-headline text-muted-foreground">
-                in 30 Days
-              </h2>
-            </div>
-
-            {/* Arabic Sample with TTS */}
-            <div className="animate-scale-in">
-              <Card className="max-w-md mx-auto bg-gradient-to-r from-muted/50 to-accent/10 border-0 shadow-strong backdrop-blur-sm">
-                <CardContent className="p-6 text-center space-y-4">
-                  <div className="arabic-xl text-primary font-bold">
-                    بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    "In the name of Allah, the Most Gracious, the Most Merciful"
-                  </p>
-                  <ModernTTS
-                    text="Bismillah Ar-Rahman Ar-Raheem"
-                    arabicText="بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ"
-                    variant="compact"
-                    className="justify-center"
-                  />
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Description */}
-            <p className="text-body-large text-muted-foreground max-w-2xl mx-auto animate-slide-up">
-              A comprehensive, interactive curriculum designed to help you learn to read the Qur'an with proper
-              tajweed and pronunciation. From basic Arabic letters to advanced recitation rules.
+            <h1 className="font-arabic text-3xl text-foreground md:text-4xl">السلام عليكم</h1>
+            <p className="text-sm text-muted-foreground">
+              Assalamu alaikum. Welcome back to Iqroh. Let&apos;s continue your Qur&apos;anic reading journey.
             </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row justify-center gap-4 animate-slide-up">
-              <Button size="lg" asChild className="btn-gradient touch-target-large shadow-strong hover:shadow-intense">
-                <Link href="/curriculum">
-                  <Zap className="mr-2 h-5 w-5" />
-                  Start Learning Journey
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" asChild className="touch-target-large rounded-xl border-2 hover:bg-muted/50">
-                <Link href="/about">
-                  <Play className="mr-2 h-5 w-5" />
-                  Watch Demo
-                </Link>
-              </Button>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto pt-8">
-              {stats.map((stat, index) => (
-                <div key={index} className="text-center space-y-3 animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className={cn(
-                    "w-14 h-14 mx-auto rounded-2xl flex items-center justify-center shadow-medium",
-                    `bg-gradient-to-r ${stat.color}`
-                  )}>
-                    <stat.icon className="h-7 w-7 text-white" />
-                  </div>
-                  <div className="text-2xl font-bold text-primary">{stat.number}</div>
-                  <div className="text-sm text-muted-foreground font-medium">{stat.label}</div>
-                </div>
-              ))}
-            </div>
           </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-background to-muted/20">
-        <div className="container-mobile md:container-tablet lg:container-desktop">
-          <div className="text-center space-y-4 mb-16">
-            <Badge variant="outline" className="mx-auto">
-              <Trophy className="w-4 h-4 mr-2" />
-              Why Choose Iqroh
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="rounded-full bg-primary/10 text-primary">
+              <Sparkles className="mr-1 h-3 w-3" />
+              {overallPct}% complete
             </Badge>
-            <h2 className="text-headline">Powerful Features for Effective Learning</h2>
-            <p className="text-body-large text-muted-foreground max-w-2xl mx-auto">
-              Experience the most comprehensive and interactive way to learn Qur'anic reading with modern technology.
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Continue learning + Streak */}
+      <section className="grid gap-4 md:grid-cols-3">
+        <Card className="md:col-span-2 border-border/60 shadow-soft">
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base">Continue learning</CardTitle>
+              <BookOpen className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <CardDescription className="text-xs">
+              Pick up where you left off.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {continueLesson ? (
+              <>
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="text-sm text-muted-foreground">
+                      Module {continueLesson.moduleId} · Lesson {continueLesson.lessonId}
+                    </div>
+                    <div className="truncate font-medium">{continueTitle}</div>
+                  </div>
+                  <Button asChild className="press-scale shrink-0">
+                    <Link href={`/lessons/${continueLesson.moduleId}/${continueLesson.lessonId}`}>
+                      <Play className="mr-1.5 h-4 w-4" />
+                      Resume
+                    </Link>
+                  </Button>
+                </div>
+                <Progress value={overallPct} className="h-1.5" />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>{completedCount} of {totalLessons} lessons</span>
+                  <span>{overallPct}%</span>
+                </div>
+              </>
+            ) : (
+              <div className="text-sm text-muted-foreground">No incomplete lessons found.</div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/60 shadow-soft">
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base">Streak</CardTitle>
+              <Flame className="h-4 w-4 text-accent" />
+            </div>
+            <CardDescription className="text-xs">Consecutive days studied</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-end gap-2">
+              <div className="text-5xl font-bold leading-none text-primary">{streak}</div>
+              <div className="pb-1 text-sm text-muted-foreground">days</div>
+            </div>
+            <p className="mt-2 text-xs text-muted-foreground">
+              Open the app daily to keep your streak alive.
             </p>
-          </div>
+          </CardContent>
+        </Card>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className={cn(
-                "group card-elevated hover:scale-105 transition-all duration-500 cursor-pointer",
-                "animate-slide-up"
-              )} style={{ animationDelay: `${index * 0.2}s` }}>
-                <CardHeader className="space-y-4">
-                  <div className={cn(
-                    "w-16 h-16 rounded-2xl flex items-center justify-center shadow-medium group-hover:shadow-strong transition-all duration-300",
-                    `bg-gradient-to-r ${feature.gradient}`
-                  )}>
-                    <feature.icon className="h-8 w-8 text-white" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-xl group-hover:text-primary transition-colors">
-                      {feature.title}
-                    </CardTitle>
-                    <CardDescription className="text-base mt-2">
-                      {feature.description}
-                    </CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {feature.title === "15 Complete Modules" && (
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span>Foundation Phase</span>
-                          <span className="text-muted-foreground">4 modules</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span>Intermediate Phase</span>
-                          <span className="text-muted-foreground">5 modules</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span>Advanced Phase</span>
-                          <span className="text-muted-foreground">6 modules</span>
-                        </div>
-                      </div>
-                    )}
-
-                    {feature.title === "Audio Pronunciation" && (
-                      <div className="space-y-2">
-                        <div className="flex items-center space-x-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                          <span>Native Arabic speakers</span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                          <span>Tajweed pronunciation</span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                          <span>Playback controls</span>
-                        </div>
-                      </div>
-                    )}
-
-                    {feature.title === "Mobile-First Design" && (
-                      <div className="space-y-2">
-                        <div className="flex items-center space-x-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                          <span>Responsive design</span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                          <span>Offline capability</span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                          <span>Touch-friendly interface</span>
-                        </div>
-                      </div>
-                    )}
-
-                    {feature.title === "Progress Tracking" && (
-                      <div className="space-y-2">
-                        <div className="flex items-center space-x-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                          <span>Detailed analytics</span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                          <span>Achievement badges</span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                          <span>Learning streaks</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+      {/* Quick actions */}
+      <section>
+        <h2 className="mb-3 text-sm font-semibold text-muted-foreground">Quick actions</h2>
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          <QuickActionCard
+            href={`/lessons/${continueLesson?.moduleId ?? 1}/${continueLesson?.lessonId ?? 1}`}
+            icon={BookOpen}
+            title="Start New Lesson"
+            description="Jump to your next lesson"
+            tone="primary"
+          />
+          <QuickActionCard
+            href="/review"
+            icon={Repeat}
+            title="Review Due Cards"
+            description="Spaced-repetition review"
+            tone="accent"
+          />
+          <QuickActionCard
+            href="/assessment/1"
+            icon={Target}
+            title="Take Assessment"
+            description="Test your mastery"
+            tone="primary"
+          />
+          <QuickActionCard
+            href="/progress"
+            icon={TrendingUp}
+            title="View Progress"
+            description="Streaks, achievements"
+            tone="accent"
+          />
         </div>
       </section>
 
-      {/* Learning Path Section */}
-      <section className="py-16 md:py-24">
-        <div className="container-mobile md:container-tablet lg:container-desktop">
-          <div className="text-center space-y-4 mb-16">
-            <Badge variant="outline" className="mx-auto">
-              <TrendingUp className="w-4 h-4 mr-2" />
-              Learning Journey
-            </Badge>
-            <h2 className="text-headline">Your 30-Day Learning Path</h2>
-            <p className="text-body-large text-muted-foreground max-w-2xl mx-auto">
-              Follow our structured curriculum designed by Islamic scholars and education experts.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Foundation Phase */}
-            <Card className="card-elevated group hover:scale-105 transition-all duration-500">
-              <CardHeader className="text-center space-y-4">
-                <div className="w-20 h-20 mx-auto bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl flex items-center justify-center shadow-strong">
-                  <BookOpen className="h-10 w-10 text-white" />
-                </div>
-                <div>
-                  <Badge variant="secondary" className="mb-2">Days 1-10</Badge>
-                  <CardTitle className="text-2xl">Foundation Phase</CardTitle>
-                  <CardDescription>Master the basics of Arabic reading</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-bold text-blue-600 dark:text-blue-400">1</span>
-                    </div>
-                    <div>
-                      <div className="font-medium">Harakat (Vowel Signs)</div>
-                      <div className="text-sm text-muted-foreground">Learn the basic vowel marks</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-bold text-blue-600 dark:text-blue-400">2</span>
-                    </div>
-                    <div>
-                      <div className="font-medium">Arabic Letters</div>
-                      <div className="text-sm text-muted-foreground">Master all 28 letters</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-bold text-blue-600 dark:text-blue-400">3</span>
-                    </div>
-                    <div>
-                      <div className="font-medium">Letter Forms</div>
-                      <div className="text-sm text-muted-foreground">Learn letter connections</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-bold text-blue-600 dark:text-blue-400">4</span>
-                    </div>
-                    <div>
-                      <div className="font-medium">Vowels Application</div>
-                      <div className="text-sm text-muted-foreground">Apply vowels to letters</div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Intermediate Phase */}
-            <Card className="card-elevated group hover:scale-105 transition-all duration-500">
-              <CardHeader className="text-center space-y-4">
-                <div className="w-20 h-20 mx-auto bg-gradient-to-r from-green-500 to-emerald-500 rounded-3xl flex items-center justify-center shadow-strong">
-                  <Target className="h-10 w-10 text-white" />
-                </div>
-                <div>
-                  <Badge variant="secondary" className="mb-2">Days 11-20</Badge>
-                  <CardTitle className="text-2xl">Intermediate Phase</CardTitle>
-                  <CardDescription>Build reading fluency and rules</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-bold text-green-600 dark:text-green-400">5</span>
-                    </div>
-                    <div>
-                      <div className="font-medium">Mudood (Elongations)</div>
-                      <div className="text-sm text-muted-foreground">Learn elongation rules</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-bold text-green-600 dark:text-green-400">6</span>
-                    </div>
-                    <div>
-                      <div className="font-medium">Sukuun & Non-Vowels</div>
-                      <div className="text-sm text-muted-foreground">Master silent letters</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-bold text-green-600 dark:text-green-400">7</span>
-                    </div>
-                    <div>
-                      <div className="font-medium">Sun & Moon Letters</div>
-                      <div className="text-sm text-muted-foreground">Learn definite article rules</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-bold text-green-600 dark:text-green-400">8-9</span>
-                    </div>
-                    <div>
-                      <div className="font-medium">Word & Sentence Formation</div>
-                      <div className="text-sm text-muted-foreground">Build reading fluency</div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Advanced Phase */}
-            <Card className="card-elevated group hover:scale-105 transition-all duration-500">
-              <CardHeader className="text-center space-y-4">
-                <div className="w-20 h-20 mx-auto bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-strong">
-                  <Award className="h-10 w-10 text-white" />
-                </div>
-                <div>
-                  <Badge variant="secondary" className="mb-2">Days 21-30</Badge>
-                  <CardTitle className="text-2xl">Advanced Phase</CardTitle>
-                  <CardDescription>Master Tajweed and perfect recitation</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-bold text-purple-600 dark:text-purple-400">10</span>
-                    </div>
-                    <div>
-                      <div className="font-medium">Tajweed Fundamentals</div>
-                      <div className="text-sm text-muted-foreground">Introduction to Tajweed</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-bold text-purple-600 dark:text-purple-400">11</span>
-                    </div>
-                    <div>
-                      <div className="font-medium">Nun Sakin & Tanween</div>
-                      <div className="text-sm text-muted-foreground">Advanced pronunciation rules</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-bold text-purple-600 dark:text-purple-400">12-15</span>
-                    </div>
-                    <div>
-                      <div className="font-medium">Complete Tajweed Rules</div>
-                      <div className="text-sm text-muted-foreground">Master all recitation rules</div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10">
-        <div className="container-mobile md:container-tablet lg:container-desktop">
-          <Card className="card-glass border-0 shadow-intense">
-            <CardContent className="p-8 md:p-12 text-center space-y-8">
-              <div className="space-y-4">
-                <Badge variant="secondary" className="mx-auto bg-gradient-primary text-white border-0">
-                  <Zap className="w-4 h-4 mr-2" />
-                  Start Your Journey Today
-                </Badge>
-                <h2 className="text-headline">Ready to Begin Your Qur'anic Reading Journey?</h2>
-                <p className="text-body-large text-muted-foreground max-w-2xl mx-auto">
-                  Join thousands of learners who have successfully mastered Qur'anic reading through our comprehensive
-                  30-day program. No prior experience required.
-                </p>
+      {/* Today's letter */}
+      <section className="grid gap-4 md:grid-cols-3">
+        <Card className="md:col-span-2 overflow-hidden border-border/60 shadow-soft">
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base">Today&apos;s letter</CardTitle>
+              <Sparkles className="h-4 w-4 text-accent" />
+            </div>
+            <CardDescription className="text-xs">Letter of the day to focus on</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-6">
+              <div className="flex h-32 w-32 shrink-0 items-center justify-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-medium">
+                <span className="font-arabic text-7xl leading-none">{featured.ar}</span>
               </div>
-
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button size="lg" asChild className="btn-gradient touch-target-large shadow-strong hover:shadow-intense">
-                  <Link href="/curriculum">
-                    <BookOpen className="mr-2 h-5 w-5" />
-                    Start Learning Now
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline" asChild className="touch-target-large rounded-xl border-2">
-                  <Link href="/about">
-                    <Users className="mr-2 h-5 w-5" />
-                    Join Community
-                  </Link>
+              <div className="flex-1 space-y-1 text-center sm:text-left">
+                <div className="text-2xl font-bold">{featured.en}</div>
+                <div className="text-sm text-muted-foreground">Transliteration: <span className="font-mono">{featured.tr}</span></div>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Tap play to hear the letter pronounced. Repeat aloud several times to lock it into memory.
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handlePlayFeatured}
+                  disabled={isPlaying}
+                  className="press-scale mt-2"
+                >
+                  <Volume2 className="mr-1.5 h-4 w-4" />
+                  {isPlaying ? "Playing..." : "Play pronunciation"}
                 </Button>
               </div>
+            </div>
+          </CardContent>
+        </Card>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-border/50">
-                <div className="text-center space-y-2">
-                  <div className="text-2xl font-bold text-primary">100%</div>
-                  <div className="text-sm text-muted-foreground">Free Forever</div>
-                </div>
-                <div className="text-center space-y-2">
-                  <div className="text-2xl font-bold text-primary">30</div>
-                  <div className="text-sm text-muted-foreground">Days to Mastery</div>
-                </div>
-                <div className="text-center space-y-2">
-                  <div className="text-2xl font-bold text-primary">24/7</div>
-                  <div className="text-sm text-muted-foreground">Access Anywhere</div>
-                </div>
+        <Card className="border-border/60 shadow-soft">
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base">Recent activity</CardTitle>
+              <ListChecks className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <CardDescription className="text-xs">Your last few lessons</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {activity.length === 0 ? (
+              <div className="py-6 text-center text-sm text-muted-foreground">
+                No lessons yet. Complete a lesson to see it here.
               </div>
+            ) : (
+              <ul className="space-y-2">
+                {activity.map((entry) => {
+                  const done = isLessonCompleted(entry.moduleId, entry.lessonId)
+                  return (
+                    <li key={`${entry.moduleId}_${entry.lessonId}_${entry.date}`}>
+                      <Link
+                        href={`/lessons/${entry.moduleId}/${entry.lessonId}`}
+                        className="flex items-center justify-between gap-2 rounded-lg border border-border/40 bg-muted/30 px-3 py-2 text-sm press-scale"
+                      >
+                        <div className="min-w-0">
+                          <div className="truncate font-medium">{entry.lessonTitle}</div>
+                          <div className="text-xs text-muted-foreground">
+                            M{entry.moduleId} · L{entry.lessonId} · {new Date(entry.date).toLocaleDateString()}
+                          </div>
+                        </div>
+                        {done ? (
+                          <Badge variant="secondary" className="shrink-0 bg-primary/10 text-primary">Done</Badge>
+                        ) : (
+                          <Badge variant="outline" className="shrink-0">In progress</Badge>
+                        )}
+                      </Link>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+          </CardContent>
+        </Card>
+      </section>
 
-              <div className="text-center pt-4">
-                <p className="text-sm text-muted-foreground">
-                  "And We have certainly made the Qur'an easy for remembrance, so is there any who will remember?"
-                  <span className="block mt-1 font-medium">- Qur'an 54:17</span>
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+      {/* Curriculum snapshot */}
+      <section>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-muted-foreground">Curriculum snapshot</h2>
+          <Button asChild variant="ghost" size="sm" className="press-scale">
+            <Link href="/curriculum">
+              View all
+              <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+            </Link>
+          </Button>
         </div>
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+          {curriculumData.phases[0].modules.slice(0, 3).map((m, i) => {
+            const moduleId = i + 1
+            const done = loadProgress().completedLessons.filter((k) => k.startsWith(`${moduleId}_`)).length
+            const pct = Math.round((done / m.lessons.length) * 100)
+            return (
+              <Card key={moduleId} className="border-border/60 shadow-soft">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">Module {moduleId}</span>
+                    <span className="text-xs font-semibold text-primary">{pct}%</span>
+                  </div>
+                  <div className="mt-1 line-clamp-1 font-medium">{m.title}</div>
+                  <Progress value={pct} className="mt-2 h-1" />
+                  <div className="mt-1 text-xs text-muted-foreground">{done}/{m.lessons.length} lessons</div>
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* Inspirational footer */}
+      <section className="rounded-2xl border border-border/60 bg-muted/30 p-5 text-center">
+        <Award className="mx-auto mb-2 h-5 w-5 text-accent" />
+        <p className="text-sm text-muted-foreground">
+          &ldquo;And We have certainly made the Qur&apos;an easy for remembrance, so is there any who will remember?&rdquo;
+        </p>
+        <p className="mt-1 text-xs text-muted-foreground/80">Qur&apos;an 54:17</p>
       </section>
     </div>
   )
 }
 
+function QuickActionCard({
+  href,
+  icon: Icon,
+  title,
+  description,
+  tone,
+}: {
+  href: string
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  description: string
+  tone: "primary" | "accent"
+}) {
+  return (
+    <Link href={href} className="block">
+      <Card className="h-full border-border/60 shadow-soft transition-all hover:shadow-medium press-scale">
+        <CardContent className="p-4">
+          <div
+            className={cn(
+              "mb-3 grid h-10 w-10 place-items-center rounded-xl",
+              tone === "primary" ? "bg-primary/10 text-primary" : "bg-accent/10 text-accent",
+            )}
+          >
+            <Icon className="h-5 w-5" />
+          </div>
+          <div className="text-sm font-semibold leading-tight">{title}</div>
+          <div className="mt-0.5 text-xs text-muted-foreground">{description}</div>
+        </CardContent>
+      </Card>
+    </Link>
+  )
+}
