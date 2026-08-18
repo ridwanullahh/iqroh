@@ -2,89 +2,355 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
+/* =========================================================================
+   IQROH DESIGN SYSTEM
+   Native-app feel: warm parchment + deep emerald, dark-mode default.
+   NO emojis anywhere. All icons are inline SVG / Lucide line icons.
+   ========================================================================= */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Light theme — warm cream / parchment */
+    --background: 39 36% 97%;          /* #FBF8F1 */
+    --foreground: 26 18% 12%;          /* deep brown-black */
+    --card: 36 30% 99%;                /* near-white parchment */
+    --card-foreground: 26 18% 12%;
+    --popover: 36 30% 99%;
+    --popover-foreground: 26 18% 12%;
+    --primary: 167 71% 21%;            /* #0E5B4C deep emerald */
+    --primary-foreground: 39 36% 98%;
+    --secondary: 38 24% 88%;
+    --secondary-foreground: 26 18% 18%;
+    --muted: 35 18% 92%;
+    --muted-foreground: 26 12% 42%;
+    --accent: 35 80% 52%;              /* warm ochre */
+    --accent-foreground: 26 18% 12%;
+    --destructive: 0 72% 46%;
+    --destructive-foreground: 39 36% 98%;
+    --border: 35 16% 84%;
+    --input: 35 16% 86%;
+    --ring: 167 71% 21%;
+    --chart-1: 167 71% 21%;
+    --chart-2: 35 80% 52%;
+    --chart-3: 28 60% 48%;
+    --chart-4: 200 55% 40%;
+    --chart-5: 280 40% 50%;
+    --radius: 0.625rem;
+
+    /* Sidebar */
+    --sidebar-background: 36 30% 99%;
+    --sidebar-foreground: 26 18% 18%;
+    --sidebar-primary: 167 71% 21%;
+    --sidebar-primary-foreground: 39 36% 98%;
+    --sidebar-accent: 35 18% 92%;
+    --sidebar-accent-foreground: 26 18% 18%;
+    --sidebar-border: 35 16% 86%;
+    --sidebar-ring: 167 71% 21%;
+
+    /* Native-app micro tokens */
+    --header-height: 4rem;
+    --bottom-nav-height: 4.5rem;
+    --sidebar-width: 16rem;
+    --spacing-unit: 0.25rem;
   }
+
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Dark theme — deep night with emerald accent (DEFAULT) */
+    --background: 30 15% 6%;            /* #0F0E0C */
+    --foreground: 39 30% 92%;
+    --card: 30 12% 9%;
+    --card-foreground: 39 30% 92%;
+    --popover: 30 12% 9%;
+    --popover-foreground: 39 30% 92%;
+    --primary: 167 60% 38%;            /* lighter emerald for contrast */
+    --primary-foreground: 30 15% 6%;
+    --secondary: 30 10% 16%;
+    --secondary-foreground: 39 30% 92%;
+    --muted: 30 10% 14%;
+    --muted-foreground: 39 12% 62%;
+    --accent: 35 75% 55%;
+    --accent-foreground: 30 15% 6%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 39 36% 98%;
+    --border: 30 10% 18%;
+    --input: 30 10% 20%;
+    --ring: 167 60% 38%;
+    --chart-1: 167 60% 38%;
+    --chart-2: 35 75% 55%;
+    --chart-3: 28 60% 58%;
+    --chart-4: 200 60% 58%;
+    --chart-5: 280 50% 62%;
+
+    --sidebar-background: 30 12% 9%;
+    --sidebar-foreground: 39 30% 92%;
+    --sidebar-primary: 167 60% 38%;
+    --sidebar-primary-foreground: 30 15% 6%;
+    --sidebar-accent: 30 10% 14%;
+    --sidebar-accent-foreground: 39 30% 92%;
+    --sidebar-border: 30 10% 18%;
+    --sidebar-ring: 167 60% 38%;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    -webkit-tap-highlight-color: transparent;
   }
-  body {
+
+  html, body {
     @apply bg-background text-foreground;
+    /* Arabic shaping for any Arabic glyphs that appear in Latin contexts */
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    overscroll-behavior-y: none;
+  }
+
+  /* Arabic typography — applies whenever the .font-arabic class is used */
+  .font-arabic, [dir="rtl"], [data-arabic] {
+    font-family: var(--font-amiri), var(--font-naskh), "Amiri", "Noto Naskh Arabic", serif;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1, "cswh" 1, "mset" 1;
+    direction: rtl;
+    unicode-bidi: plaintext;
+    line-height: 1.9;
+    letter-spacing: 0;
+  }
+
+  /* Safe-area insets for notched devices */
+  .safe-top    { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-left   { padding-left: env(safe-area-inset-left); }
+  .safe-right  { padding-right: env(safe-area-inset-right); }
+  .safe-all    { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+
+  /* Selection */
+  ::selection {
+    background: hsl(var(--primary) / 0.25);
+    color: hsl(var(--foreground));
+  }
+
+  /* Focus-visible accessibility */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+}
+
+/* =========================================================================
+   MICRO-INTERACTION UTILITIES
+   ========================================================================= */
+@layer utilities {
+  .press-scale {
+    transition: transform 150ms ease-out, background-color 150ms ease-out;
+  }
+  .press-scale:active {
+    transform: scale(0.95);
+  }
+
+  .card-tap {
+    transition: background-color 200ms ease-out, transform 200ms ease-out;
+  }
+  .card-tap:active {
+    background-color: hsl(var(--muted));
+    transform: scale(0.98);
+  }
+
+  .swipe-reveal {
+    transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+  .swipe-reveal[data-swiped="left"]  { transform: translateX(-4rem); }
+  .swipe-reveal[data-swiped="right"] { transform: translateX(4rem); }
+
+  /* Page transition (view-transitions API) */
+  .page-transition {
+    view-transition-name: page;
+  }
+
+  /* Native-app containers */
+  .container-mobile {
+    width: 100%;
+    max-width: 28rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  .container-tablet {
+    width: 100%;
+    max-width: 48rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  .container-desktop {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 2rem;
+  }
+
+  /* Arabic-specific display sizes */
+  .arabic-xs { font-size: 1.25rem; }
+  .arabic-sm { font-size: 1.75rem; }
+  .arabic-md { font-size: 2.5rem; }
+  .arabic-lg { font-size: 3.5rem; }
+  .arabic-xl { font-size: 5rem; }
+  .arabic-2xl { font-size: 7rem; }
+  .arabic-3xl { font-size: 9rem; }
+
+  /* Letter forms display */
+  .letter-form {
+    font-family: var(--font-amiri), var(--font-naskh), "Amiri", "Noto Naskh Arabic", serif;
+    font-size: 3rem;
+    line-height: 1.4;
+    direction: rtl;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1, "cswh" 1;
+  }
+  .letter {
+    font-family: var(--font-amiri), var(--font-naskh), "Amiri", "Noto Naskh Arabic", serif;
+    font-size: 4.5rem;
+    line-height: 1;
+    direction: rtl;
+  }
+  .harakat {
+    font-family: var(--font-amiri), var(--font-naskh), "Amiri", "Noto Naskh Arabic", serif;
+    font-size: 3rem;
+    line-height: 1.2;
+    direction: rtl;
+  }
+
+  /* Skeleton shimmer */
+  .skeleton-shimmer {
+    background: linear-gradient(90deg,
+      hsl(var(--muted)) 0%,
+      hsl(var(--muted) / 0.5) 50%,
+      hsl(var(--muted)) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+  }
+
+  /* Soft elevated card */
+  .card-elevated {
+    box-shadow:
+      0 1px 2px hsl(var(--foreground) / 0.05),
+      0 8px 24px hsl(var(--foreground) / 0.06),
+      0 24px 48px -12px hsl(var(--foreground) / 0.08);
+  }
+  .card-modern {
+    box-shadow:
+      0 1px 2px hsl(var(--foreground) / 0.04),
+      0 4px 12px hsl(var(--foreground) / 0.05);
+  }
+  .card-glass {
+    background: hsl(var(--card) / 0.7);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid hsl(var(--border) / 0.6);
+  }
+
+  /* Gradients */
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent) / 0.85) 100%);
+  }
+  .btn-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent) / 0.9) 100%);
+    color: hsl(var(--primary-foreground));
+  }
+
+  /* Touch targets */
+  .touch-target       { min-width: 44px; min-height: 44px; }
+  .touch-target-large { min-width: 56px; min-height: 56px; }
+
+  /* Soft shadow utilities */
+  .shadow-soft  { box-shadow: 0 2px 8px hsl(var(--foreground) / 0.06); }
+  .shadow-medium{ box-shadow: 0 4px 12px hsl(var(--foreground) / 0.08), 0 1px 3px hsl(var(--foreground) / 0.05); }
+  .shadow-strong{ box-shadow: 0 12px 32px hsl(var(--foreground) / 0.12), 0 4px 8px hsl(var(--foreground) / 0.06); }
+  .shadow-intense{ box-shadow: 0 24px 64px hsl(var(--foreground) / 0.18), 0 8px 16px hsl(var(--foreground) / 0.08); }
+
+  /* Animations */
+  .animate-fade-in    { animation: fade-in 0.4s ease-out both; }
+  .animate-slide-up   { animation: slide-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .animate-scale-in   { animation: scale-in 0.4s ease-out both; }
+  .animate-pulse-soft { animation: pulse-soft 2.4s ease-in-out infinite; }
+
+  /* Text helpers */
+  .text-display { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.05; font-weight: 800; letter-spacing: -0.04em; }
+  .text-headline { font-size: clamp(1.75rem, 4vw, 2.5rem); line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; }
+  .text-body-large { font-size: 1.125rem; line-height: 1.6; }
+
+  /* Hide scrollbar but keep functional */
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* Gradient text */
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* =========================================================================
+   VIEW TRANSITIONS API (smooth page transitions)
+   ========================================================================= */
+@supports (view-transition-name: none) {
+  ::view-transition-old(page) {
+    animation: page-fade-out 180ms ease-out both;
+  }
+  ::view-transition-new(page) {
+    animation: page-fade-in 240ms ease-out both;
+  }
+}
+
+/* =========================================================================
+   KEYFRAMES
+   ========================================================================= */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes page-fade-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes page-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================================
+   REDUCED MOTION — disable non-essential animations for accessibility
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .press-scale:active,
+  .card-tap:active,
+  .swipe-reveal {
+    transform: none !important;
   }
 }
