@@ -5,15 +5,6 @@ import { curriculumData } from "@/lib/curriculum-data"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
-
-// Bismillah.
-// Dynamic catch-all for lessons that do not have a specific page.tsx
-// file under app/lessons/<moduleId>/<lessonId>/. Renders a structured
-// "lesson preview" view with the lesson's title, description, the
-// module context, and quick actions (audio, writing practice,
-// review). Users can still mark the lesson complete from here so
-// progress tracking is uninterrupted.
 
 export function generateStaticParams() {
   const params: { moduleId: string; lessonId: string }[] = []
@@ -35,8 +26,8 @@ export function generateMetadata({ params }: { params: { moduleId: string; lesso
   const lesson = findLesson(moduleId, lessonId)
   if (!lesson) return { title: "Lesson not found" }
   return {
-    title: lesson.title,
-    description: `Iqroh lesson: ${lesson.title}. Continue your Quranic reading journey.`,
+    title: lesson.lesson.title,
+    description: `Iqroh lesson: ${lesson.lesson.title}. Continue your Quranic reading journey.`,
   }
 }
 
@@ -68,7 +59,6 @@ function findLesson(moduleId: number, lessonId: number): { lesson: LessonRef; mo
 }
 
 function findAdjacentLessons(moduleId: number, lessonId: number) {
-  // Flatten all (moduleId, lessonId, lesson) tuples
   const flat: { moduleId: number; lessonId: number; lesson: LessonRef; module: ModuleRef }[] = []
   let counter = 0
   for (const phase of curriculumData.phases) {
@@ -96,15 +86,9 @@ export default function DynamicLessonPage({ params }: { params: { moduleId: stri
   const { lesson, module, phaseTitle } = found
   const { prev, next, total, position } = findAdjacentLessons(moduleId, lessonId)
 
-  // The lesson content for this dynamic catch-all is intentionally
-  // a structured preview rather than a rich custom layout. Specific
-  // lessons (e.g. /lessons/2/1) have their own page.tsx with the
-  // full rich content. This catch-all ensures every lesson in the
-  // curriculum is reachable.
   return (
     <div className="min-h-screen bg-background pb-24 pt-4">
       <div className="container mx-auto max-w-3xl px-4">
-        {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
           <Link href="/curriculum" className="hover:text-foreground transition-colors">
             Curriculum
@@ -113,7 +97,6 @@ export default function DynamicLessonPage({ params }: { params: { moduleId: stri
           <span className="text-foreground">{module.title}</span>
         </nav>
 
-        {/* Header */}
         <header className="mb-8">
           <div className="flex items-center gap-2 mb-3">
             <Badge variant="outline" className="text-xs">
@@ -133,7 +116,6 @@ export default function DynamicLessonPage({ params }: { params: { moduleId: stri
           <p className="text-muted-foreground text-base leading-relaxed">{module.description}</p>
         </header>
 
-        {/* Lesson preview card */}
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -152,29 +134,13 @@ export default function DynamicLessonPage({ params }: { params: { moduleId: stri
               alive and your progress moving forward.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <ActionCard
-                href="/review"
-                icon={<Repeat className="w-4 h-4" />}
-                title="Review"
-                description="Spaced-repetition cards"
-              />
-              <ActionCard
-                href="/curriculum"
-                icon={<ListChecks className="w-4 h-4" />}
-                title="All lessons"
-                description="Browse the curriculum"
-              />
-              <ActionCard
-                href="/progress"
-                icon={<TrendingUp className="w-4 h-4" />}
-                title="Progress"
-                description="Streaks and achievements"
-              />
+              <ActionCard href="/review" icon={<Repeat className="w-4 h-4" />} title="Review" description="Spaced-repetition cards" />
+              <ActionCard href="/curriculum" icon={<ListChecks className="w-4 h-4" />} title="All lessons" description="Browse the curriculum" />
+              <ActionCard href="/progress" icon={<TrendingUp className="w-4 h-4" />} title="Progress" description="Streaks and achievements" />
             </div>
           </CardContent>
         </Card>
 
-        {/* Audio practice hint */}
         <Card className="mb-8 border-emerald-600/30 bg-emerald-600/5">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
@@ -192,7 +158,6 @@ export default function DynamicLessonPage({ params }: { params: { moduleId: stri
           </CardContent>
         </Card>
 
-        {/* Writing practice hint */}
         <Card className="mb-8 border-sky-600/30 bg-sky-600/5">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
@@ -211,7 +176,6 @@ export default function DynamicLessonPage({ params }: { params: { moduleId: stri
           </CardContent>
         </Card>
 
-        {/* Navigation */}
         <nav className="flex items-center justify-between gap-4 pt-4 border-t">
           {prev ? (
             <Button asChild variant="outline" size="sm">
