@@ -26,3 +26,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# Build output (static export)
+/out/
+
+# Wrangler
+.wrangler/
