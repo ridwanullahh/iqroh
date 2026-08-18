@@ -212,3 +212,11 @@ export const speakArabicText = async (text: string): Promise<void> => {
   return speakText(text)
 }
 
+// Check if the browser supports the Web Speech API for on-device
+// pronunciation. Used by the lesson example audio buttons to
+// gracefully degrade when speech synthesis is unavailable.
+export const isSpeechSynthesisSupported = (): boolean => {
+  if (typeof window === "undefined") return false
+  return "speechSynthesis" in window && typeof window.speechSynthesis.speak === "function"
+}
+
