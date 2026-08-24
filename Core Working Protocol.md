@@ -138,12 +138,13 @@ foundation. Do not be too eager to start before the protocol is observed.**
    Laa ilaaha illa-ALLAH, wa ALLAHU AKBAR, walaa hawla walaa quwwata illaa biLLAH.
    Astaghfirullaaha wa atoobu ilayh.
 
-   feat(curriculum): complete module 4 lessons 2 through 7
+   feat(db): migrate posts collection to Lightbase via env-driven SDK
 
-   - fill in writing practice, pronunciation drill, and assessment
-     pages for the remaining module 4 lessons
-   - wire spaced-repetition metadata for the new lessons
-   - ensure no "TODO" placeholder remains in lesson content
+   - add lib/lightbase/client.ts (universal HTTP client)
+   - rewrite lib/universal-sdk.ts to delegate to Lightbase when
+     LIGHTBASE_API_KEY is set, falling back to GitHub JSON storage
+     only in local dev when LIGHTBASE_API_KEY is empty
+   - keep the public method shape identical so callers are unaffected
 
    BismiLLAH Ar-Rahman Ar-Roheem
    Ash-hadu an laa ilaaha illa-Llah wahdaHu lasharikalaHu,
@@ -182,14 +183,22 @@ foundation. Do not be too eager to start before the protocol is observed.**
     exact spelling MUST be used in every commit message, both opening
     and closing seals.
 
-11. **Cloudflare Pages, not Workers.** All three apps deploy to
+11. **Admin credentials are env-based.** For `deendose` and `deenqa`
+    the admin login MUST read credentials from
+    `process.env.ADMIN_USERNAME` and `process.env.ADMIN_PASSWORD`
+    (hashed via bcrypt or argon2 in production; plaintext comparison
+    is forbidden). The `.env.example` file documents both variables
+    with placeholder values. The default admin password must NEVER be
+    committed.
+
+12. **Cloudflare Pages, not Workers.** All three apps deploy to
     **Cloudflare Pages** with the Next.js runtime. The deployment is
     done programmatically via the Cloudflare API (account ID + API
     token in env). Never silently fall back to Vercel or Netlify. If
     Cloudflare deployment fails, the failure is surfaced as a
     `BLOCKER:` in the worklog.
 
-12. **Subagent delegation.** When delegating to a subagent, the lead
+13. **Subagent delegation.** When delegating to a subagent, the lead
     agent MUST:
     - Assign a Task ID matching the global todo order
       (`1`, `2-a`, `2-b`, `3`).
@@ -256,45 +265,58 @@ Lightbase credentials are invalid), the agent MUST mark the task as
 
 ## 6. REPO-SPECIFIC CONTRACTS
 
-### 6.3 Iqroh (this repo)
+### 6.1 DeenDose
+
+- **DB**: Lightbase (`LIGHTBASE_API_KEY`, `LIGHTBASE_PROJECT=deendose`,
+  `LIGHTBASE_BASE_URL`, `LIGHTBASE_TENANT=default`).
+- **Admin**: env-based credentials (`ADMIN_USERNAME`, `ADMIN_PASSWORD`
+  hashed with bcrypt). Audit log of every admin action.
+- **Public features**: daily post card, archive, hijri calendar,
+  category filter, search.
+- **Admin features**: post-editor, content-review queue, schedule
+  manager, automation control panel, analytics dashboard, OAuth
+  platform connections, social-media settings.
+- **No GitHub JSON backend in production.** The GitHub-backed
+  `UniversalSDK` is replaced by a Lightbase-backed implementation
+  with the same public method shape. The legacy GitHub backend is
+  kept only as a local dev fallback when `LIGHTBASE_API_KEY` is empty.
+- **Social media publishers** (Twitter, Facebook, Instagram,
+  Telegram, WhatsApp, LinkedIn) read their OAuth tokens from
+  Lightbase, not from local JSON.
+
+### 6.2 DeenQA
+
+- **DB**: Lightbase (`LIGHTBASE_API_KEY`, `LIGHTBASE_PROJECT=deenqa`,
+  `LIGHTBASE_BASE_URL`, `LIGHTBASE_TENANT=default`).
+- **Admin**: env-based credentials (`ADMIN_USERNAME`,
+  `ADMIN_PASSWORD` hashed with bcrypt).
+- **Public features**: question list, topic list, question detail
+  with related questions, search, bookmarks, reading history,
+  glossary, profile.
+- **Admin features**: topic manager, question manager, audit log
+  viewer, analytics dashboard.
+- **No in-memory DB in production.** The `InMemoryDatabase` class is
+  replaced by a Lightbase-backed implementation with the same method
+  shape, so callers (`lib/sdk.ts`, the API routes, the React hooks)
+  are unaffected.
+
+### 6.3 Iqroh
 
 - **DB**: none. All curriculum data lives in `lib/curriculum-data.ts`
-  and is committed to the repo. No Lightbase, no JSON-on-GitHub, no
-  in-memory placeholder. The data file is the source of truth and is
-  imported directly by the lesson/assessment/review pages.
-
-- **UI/UX**: fully revamp to a native-app feel. The bar is "99x better
-  than the current UI", which in practice means:
-  - Sticky bottom navigation on mobile, sticky top header on desktop.
-  - Smooth page transitions (CSS view-transitions API or
-    framer-motion equivalent, but no heavy animation libraries —
-    pure CSS where possible).
-  - Gesture-friendly cards: large tap targets, generous padding,
-    safe-area insets for notched devices.
-  - Micro-interactions on every interactive element: button press
-    scale, card tap highlight, swipe-to-reveal actions.
-  - Optimised typography for both Arabic (Noto Naskh Arabic /
-    Amiri / Scheherazade) and Latin (Inter / Source Sans) scripts.
-  - Dark mode default with a high-contrast accessible palette.
-  - Loading skeletons everywhere; never a blank screen.
-
+  and is committed to the repo. No Lightbase, no JSON-on-GitHub.
+- **UI/UX**: fully revamp to a native-app feel. Sticky bottom
+  navigation, smooth page transitions, gesture-friendly cards,
+  haptic-equivalent micro-interactions, optimised typography for
+  Arabic and Latin scripts.
 - **Curriculum**: complete every module and lesson in the Iqra
-  primer. The Iqra method has 6 volumes; this app focuses on Volume 1
-  (the foundational letters and harakat) but the structure must
-  extend cleanly to volumes 2 through 6. No `TODO` or "coming soon"
-  placeholders in lesson content. If a lesson cannot be completed in
-  this pass, it must be flagged with `BLOCKER:` in the worklog.
-
+  primer. No `TODO` or "coming soon" placeholders in lesson content.
 - **Learning aids**: spaced-repetition review sessions, writing
   practice with stroke-order guidance, pronunciation practice with
   audio playback, progress tracker, module assessments, bookmarked
-  review cards. All of these must work end-to-end on the real UI —
-  not just render placeholders.
-
+  review cards.
 - **Deployment**: Cloudflare Pages static export. The Next.js
   `output: 'export'` flag may be set if needed for a fully static
-  build. The build artifact lives in `out/` and is uploaded to
-  Cloudflare Pages via the API.
+  build.
 
 ---
 

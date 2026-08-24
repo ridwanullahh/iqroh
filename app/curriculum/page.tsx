@@ -21,6 +21,7 @@ import { curriculumData } from "@/lib/curriculum-data"
 import {
   getLastAccessedLesson,
   getNextIncompleteLesson,
+  getContinueLesson,
   isAssessmentCompleted,
   isLessonCompleted,
   isModuleCompleted,
@@ -514,7 +515,7 @@ function ContinueLearningButton() {
   } | null>(null)
 
   useEffect(() => {
-    setNext(getNextIncompleteLesson())
+    setNext(getContinueLesson())
   }, [])
 
   if (!next) return null
@@ -540,8 +541,8 @@ export default function CurriculumPage() {
   )
 
   useEffect(() => {
-    // Pre-expand the module containing the user's next incomplete lesson
-    const next = getNextIncompleteLesson()
+    // Pre-expand the module containing the user's continue-learning lesson
+    const next = getContinueLesson()
     setExpandedModules(new Set([next.moduleId]))
     setHydrated(true)
   }, [])

@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils"
 import {
   getStreak,
   getNextIncompleteLesson,
+  getContinueLesson,
   getRecentActivity,
   getModuleById,
   getTotalLessonCount,
@@ -117,7 +118,7 @@ export default function HomePage() {
 
   useEffect(() => {
     setStreak(getStreak().count)
-    setContinueLesson(getNextIncompleteLesson())
+    setContinueLesson(getContinueLesson())
     setActivity(getRecentActivity(5))
     setTotalLessons(getTotalLessonCount())
     setCompletedCount(loadProgress().completedLessons.length)

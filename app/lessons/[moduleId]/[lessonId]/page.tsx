@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArabicText, ArabicPronunciation, ExampleAudio, KeyPointCard } from "@/components/lesson-content-display"
+import { LessonTracker } from "@/components/lesson-tracker"
 
 // Bismillah. Dynamic catch-all lesson page that renders the rich
 // lesson content from lib/lesson-content/. Removes the old
@@ -119,6 +120,10 @@ export default function DynamicLessonPage({ params }: { params: { moduleId: stri
                 Completed
               </Badge>
             )}
+            {/* Lesson tracker — records access + offers complete button */}
+            <div className="ml-auto">
+              <LessonTracker moduleId={moduleId} lessonId={lessonId} />
+            </div>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">{lesson.title}</h1>
           <p className="text-muted-foreground text-base leading-relaxed">{module.description}</p>

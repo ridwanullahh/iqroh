@@ -127,6 +127,22 @@ export const completeLesson = (moduleId: number, lessonId: number): UserProgress
   return progress
 }
 
+// Record that the user has ACCESSED (opened) a lesson, without
+// marking it as completed. This is used by the "Continue Learning"
+// feature on the home page — it returns the user to the lesson they
+// were last viewing, even if they haven't completed it yet.
+//
+// Without this, the home page would always return to the FIRST
+// incomplete lesson (typically lesson 1/1), which is the bug
+// "Continue Learning just returns to the first lesson".
+export const accessLesson = (moduleId: number, lessonId: number): UserProgress => {
+  const progress = loadProgress()
+  progress.lastModule = moduleId
+  progress.lastLesson = lessonId
+  saveProgress(progress)
+  return progress
+}
+
 // Mark an assessment as completed
 export const completeAssessment = (moduleId: number): UserProgress => {
   const progress = loadProgress()
@@ -270,7 +286,9 @@ export const getLastAccessedLesson = (): { moduleId: number; lessonId: number } 
   return { moduleId: progress.lastModule, lessonId: progress.lastLesson }
 }
 
-// Get the first incomplete lesson to suggest as "Continue learning"
+// Get the first incomplete lesson, walking forward from a given
+// starting position. Used by getNextIncompleteLesson() and by
+// getContinueLesson() below.
 export const getNextIncompleteLesson = (): { moduleId: number; lessonId: number } => {
   const progress = loadProgress()
   // Start from last accessed, walk forward looking for an incomplete lesson
@@ -299,6 +317,41 @@ export const getNextIncompleteLesson = (): { moduleId: number; lessonId: number 
     lessonId += 1
   }
   return { moduleId, lessonId }
+}
+
+// Get the lesson the user should "Continue Learning" — this is the
+// primary entry point for the home page's Continue Learning tile.
+//
+// Logic:
+//   1. If the user has a last-accessed lesson that is NOT complete,
+//      return that lesson (resume where they left off).
+//   2. Otherwise, return the next incomplete lesson (walk forward).
+//   3. Otherwise (all lessons complete), return the first lesson of
+//      the first module so they can review from the start.
+export const getContinueLesson = (): { moduleId: number; lessonId: number } => {
+  const progress = loadProgress()
+  const lastModule = progress.lastModule || 1
+  const lastLesson = progress.lastLesson || 1
+  const lastKey = `${lastModule}_${lastLesson}`
+
+  // Case 1: last-accessed lesson exists and is NOT complete → resume it.
+  // We also verify the lesson actually exists in the curriculum
+  // (in case the user's localStorage is stale).
+  const module = getModuleById(lastModule)
+  if (module && lastLesson >= 1 && lastLesson <= module.lessons.length) {
+    if (!progress.completedLessons.includes(lastKey)) {
+      return { moduleId: lastModule, lessonId: lastLesson }
+    }
+  }
+
+  // Case 2: walk forward to the next incomplete lesson.
+  const next = getNextIncompleteLesson()
+  if (next.moduleId !== 1 || next.lessonId !== 1) {
+    return next
+  }
+
+  // Case 3: everything complete, or curriculum is empty — return 1/1.
+  return { moduleId: 1, lessonId: 1 }
 }
 
 // Reset all progress (for testing)
