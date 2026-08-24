@@ -22,6 +22,12 @@ import {
   getStreak,
   getTotalLessonCount,
 } from "@/lib/progress-service"
+import {
+  loadReviewCards,
+  getDueCount,
+  getLearnedCount,
+  getMasteredCount,
+} from "@/lib/spaced-repetition"
 import { curriculumData } from "@/lib/curriculum-data"
 
 export default function ProgressPage() {
@@ -29,11 +35,29 @@ export default function ProgressPage() {
   const [progress, setProgress] = useState<ReturnType<typeof loadProgress> | null>(null)
   const [streak, setStreak] = useState(0)
   const [totalLessons, setTotalLessons] = useState(0)
+  const [reviewStats, setReviewStats] = useState<{ due: number; learned: number; mastered: number; total: number }>({
+    due: 0,
+    learned: 0,
+    mastered: 0,
+    total: 0,
+  })
 
   useEffect(() => {
     setProgress(loadProgress())
     setStreak(getStreak().count)
     setTotalLessons(getTotalLessonCount())
+    // Load review deck stats
+    try {
+      const cards = loadReviewCards()
+      setReviewStats({
+        due: getDueCount(cards),
+        learned: getLearnedCount(cards),
+        mastered: getMasteredCount(cards),
+        total: cards.length,
+      })
+    } catch {
+      // Review deck not yet initialised — leave the zeros
+    }
     setHydrated(true)
   }, [])
 
@@ -146,6 +170,30 @@ export default function ProgressPage() {
               <Progress value={row.pct} className="mt-1.5 h-1" />
             </Link>
           ))}
+        </CardContent>
+      </Card>
+
+      {/* Review deck stats */}
+      <Card className="border-border/60 shadow-soft">
+        <CardHeader className="pb-2">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base">Review deck</CardTitle>
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/review">
+                Open review
+                <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+              </Link>
+            </Button>
+          </div>
+          <CardDescription>Spaced-repetition cards (letters, harakat, vocabulary)</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <ReviewStatTile label="Due now" value={reviewStats.due} tone="amber" />
+            <ReviewStatTile label="Learning" value={reviewStats.learned} tone="sky" />
+            <ReviewStatTile label="Mastered" value={reviewStats.mastered} tone="emerald" />
+            <ReviewStatTile label="Total cards" value={reviewStats.total} tone="purple" />
+          </div>
         </CardContent>
       </Card>
 
@@ -271,6 +319,29 @@ function AchievementTile({
       </div>
       <div className="text-xs font-semibold">{title}</div>
       <div className="text-[10px] text-muted-foreground leading-tight mt-0.5">{description}</div>
+    </div>
+  )
+}
+
+function ReviewStatTile({
+  label,
+  value,
+  tone,
+}: {
+  label: string
+  value: number
+  tone: "amber" | "sky" | "emerald" | "purple"
+}) {
+  const toneClasses = {
+    amber: "text-amber-600",
+    sky: "text-sky-600",
+    emerald: "text-emerald-600",
+    purple: "text-purple-600",
+  }
+  return (
+    <div className="rounded-lg border border-border/40 bg-muted/30 p-3 text-center">
+      <div className={cn("text-2xl font-bold", toneClasses[tone])}>{value}</div>
+      <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">{label}</div>
     </div>
   )
 }

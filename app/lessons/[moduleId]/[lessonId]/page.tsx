@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Volume2, PenLine, Sparkles, ListChecks, Lightbulb } from "lucide-react"
+import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Volume2, PenLine, Sparkles, ListChecks, Lightbulb, Brain } from "lucide-react"
 import { curriculumData } from "@/lib/curriculum-data"
 import { getLessonContentByPosition, type LessonContent } from "@/lib/lesson-content"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { ArabicText, ArabicPronunciation, ExampleAudio, KeyPointCard } from "@/components/lesson-content-display"
 import { LessonTracker } from "@/components/lesson-tracker"
 import { SurahBreakdown } from "@/components/surah-breakdown"
+import { LessonPractice } from "@/components/lesson-practice"
 
 // Bismillah. Dynamic catch-all lesson page that renders the rich
 // lesson content from lib/lesson-content/. Removes the old
@@ -132,7 +133,7 @@ export default function DynamicLessonPage({ params }: { params: { moduleId: stri
 
         {/* Lesson content (when available) */}
         {content ? (
-          <LessonContentRenderer content={content} position={position} total={total} />
+          <LessonContentRenderer content={content} position={position} total={total} lessonTitle={lesson.title} />
         ) : (
           // Fallback for any lesson without rich content (should not happen with the current data)
           <Card className="mb-8">
@@ -196,7 +197,7 @@ export default function DynamicLessonPage({ params }: { params: { moduleId: stri
   )
 }
 
-function LessonContentRenderer({ content, position, total }: { content: LessonContent; position: number; total: number }) {
+function LessonContentRenderer({ content, position, total, lessonTitle }: { content: LessonContent; position: number; total: number; lessonTitle: string }) {
   return (
     <div className="space-y-8">
       {/* Intro paragraphs */}
@@ -322,6 +323,17 @@ function LessonContentRenderer({ content, position, total }: { content: LessonCo
               </div>
             </CardContent>
           </Card>
+        </section>
+      )}
+
+      {/* Interactive practice quiz — generated from the lesson's examples */}
+      {content.examples.length >= 2 && (
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Brain className="w-4 h-4 text-purple-500" />
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Interactive Quiz</h2>
+          </div>
+          <LessonPractice examples={content.examples} questionCount={5} lessonTitle={lessonTitle} />
         </section>
       )}
     </div>
