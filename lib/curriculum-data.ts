@@ -205,6 +205,25 @@ export const curriculumData = {
         },
       ],
     },
+    {
+      title: "Capstone Phase (Days 31-40)",
+      description:
+        "Apply everything you've learned by studying four foundational surahs word-by-word. Each lesson breaks down a complete surah — Arabic, transliteration, translation, grammar notes, and tajweed rules — with real recitation audio from qualified qaris.",
+      modules: [
+        {
+          title: "Surah Word-by-Word Breakdown",
+          description:
+            "Study four foundational surahs word-by-word: Al-Fatihah (the Opening), Al-Ikhlas (Sincerity), Al-Falaq (the Daybreak), and An-Nas (Mankind). Each lesson includes the full Arabic text, per-word transliteration and translation, grammar notes, tajweed rule callouts, and real recitation audio from qualified qaris.",
+          isAvailable: true,
+          lessons: [
+            { title: "Surah Al-Fatihah (The Opening) — Word by Word", slug: "surah-al-fatihah-wordbyword", isCompleted: false },
+            { title: "Surah Al-Ikhlas (Sincerity) — Word by Word", slug: "surah-al-ikhlas-wordbyword", isCompleted: false },
+            { title: "Surah Al-Falaq (The Daybreak) — Word by Word", slug: "surah-al-falaq-wordbyword", isCompleted: false },
+            { title: "Surah An-Nas (Mankind) — Word by Word", slug: "surah-an-nas-wordbyword", isCompleted: false },
+          ],
+        },
+      ],
+    },
   ],
 }
 

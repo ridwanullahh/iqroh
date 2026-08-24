@@ -3,21 +3,31 @@
 // Index for the lesson content system. Combines all phase content
 // into a single lookup map by lesson slug.
 //
-// The lesson slug (e.g., "fathah", "intro-to-tajweed") is the
-// unique key used by the curriculum data and the lesson pages.
+// The lesson slug (e.g., "fathah", "intro-to-tajweed",
+// "surah-al-fatihah-wordbyword") is the unique key used by the
+// curriculum data and the lesson pages.
 
 import type { LessonContent } from "./types"
 import { foundationContent } from "./foundation"
 import { intermediateContent } from "./intermediate"
 import { advancedContent, advancedContentPart2 } from "./advanced"
+import { capstoneContent } from "./capstone"
 
-export type { LessonContent, LessonExample, LessonKeyPoint } from "./types"
+export type {
+  LessonContent,
+  LessonExample,
+  LessonKeyPoint,
+  LessonWordBreakdown,
+  LessonAyahBreakdown,
+  LessonSurahBreakdown,
+} from "./types"
 
 export const lessonContent: Record<string, LessonContent> = {
   ...foundationContent,
   ...intermediateContent,
   ...advancedContent,
   ...advancedContentPart2,
+  ...capstoneContent,
 }
 
 /**

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArabicText, ArabicPronunciation, ExampleAudio, KeyPointCard } from "@/components/lesson-content-display"
 import { LessonTracker } from "@/components/lesson-tracker"
+import { SurahBreakdown } from "@/components/surah-breakdown"
 
 // Bismillah. Dynamic catch-all lesson page that renders the rich
 // lesson content from lib/lesson-content/. Removes the old
@@ -251,6 +252,19 @@ function LessonContentRenderer({ content, position, total }: { content: LessonCo
               </Card>
             ))}
           </div>
+        </section>
+      )}
+
+      {/* Surah word-by-word breakdown (Capstone Phase lessons only) */}
+      {content.surahBreakdown && (
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <BookOpen className="w-4 h-4 text-emerald-600" />
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              Word-by-Word Breakdown — Surah {content.surahBreakdown.surahName}
+            </h2>
+          </div>
+          <SurahBreakdown breakdown={content.surahBreakdown} />
         </section>
       )}
 
